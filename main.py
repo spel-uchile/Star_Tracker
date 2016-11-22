@@ -2,6 +2,7 @@
 # STAR TRACKER SOFTWARE.
 ## DEVELOPED BY:
 # SAMUEL GUTIERREZ R.
+# samuel.gutierrez@usach.cl
 
 ## INSTRUCTIONS:
 # 1.- Reseteo de variables e importación de librerias.
