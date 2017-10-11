@@ -3,7 +3,7 @@
 # Star_Tracker
 Star Tracker development for SUCHAI 2 - 3.
 
-This Git-Hub is free and open to everyone interested in using it.
+This Git-Hub is free and open to everyone interested in using it.\\
 The current version is on the folder V2.0.
 
 ## Instructions
