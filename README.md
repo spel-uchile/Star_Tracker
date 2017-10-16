@@ -1,4 +1,5 @@
-## Currently working on this!!
+## Currently working on upgrade!
+# For V1.0 --> V2.0
 
 # Star_Tracker
 Star Tracker development for SUCHAI 2 - 3.
