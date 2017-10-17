@@ -15,8 +15,7 @@ This Git-Hub is free and open to everyone interested in using it. <br />
 2.- Download the code for V2.0 and run it on your Raspberry.
 
 ## Any questions?
-
-Contact: Samuel Gutiérrez Russell
-PhD student at Universidad de Chile, Santiago, Chile.
+Contact: Samuel Gutiérrez Russell<br />
+PhD student at Universidad de Chile, Santiago, Chile.<br />
 
 Email:   samuel.gutierrez@ug.uchile.cl
