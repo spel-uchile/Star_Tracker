@@ -8,9 +8,9 @@ Star Tracker development for SUCHAI 2 - 3.
 
 ## Instructions for use
 1.- This ST code is based on two open softwares: Source Extractor and Match. In order to use it, you need this two software first.<br />
-  1.1.- Get Source Extractor for: https://www.astromatic.net/software/sextractor.<br />
-  1.2.- Get match for: http://spiff.rit.edu/match/. We use the version 0.14 in our Python program.<br />
-  1.3.- Install the two programs in your Raspberry.<br />
+    1.1.- Get Source Extractor for: https://www.astromatic.net/software/sextractor.<br />
+    1.2.- Get match for: http://spiff.rit.edu/match/. We use the version 0.14 in our Python program.<br />
+    1.3.- Install the two programs in your Raspberry.<br />
 
 2.- Get the star catalog. They are two folders, "Normal" and "Projected", and are in: V2.0/Catalog/
 
