@@ -3,6 +3,7 @@
 
 ### AUTHOR:
 ## Samuel Gutiérrez Russell
+## Estudiante de Doctorado Ing. Eléctrica - Universidad de Chile.
 ## email: samuel.gutierrez@ug.uchile.cl
 
 
@@ -17,12 +18,12 @@ from PIL import Image
 from astropy.io import fits, ascii
 from astropy.table import Table
 
-## 2.- Take picture of the sky.
+## 2.- Take a picture of the sky.
 
 take_img = 'raspistill -ss 800000 -w 1024 -h 1024 -o img.jpg'
 os.system(take_img)
 
-## 3.- Directories definition and basic names.
+## 3.- Define directories and basic names.
 
 # Nombre de imagen .jpg.
 nombre_img_jpg = '26_07_-_21_01_51_image7_800.jpg'
@@ -45,7 +46,7 @@ Scripts/Catalogo_dividido_y_proyectado/RA_10_DEC_10_V2/Normal/'
 # Directorio donde se guarda el catalogo proyectado en el punto que entrega como resultado el primer Match.
 new_path_catalog = dir_img_fits + 'new_cat'
 
-## 4.- Take image to 'fits' format.
+## 4.- Change image to 'fits' format.
 
 # Lectura de imagen.
 image = Image.open(dir_img_jpg)
@@ -96,7 +97,6 @@ ascii.write([sex_x1, sex_y1, sex_mag], 'sext', delimiter = ' ', format = 'no_hea
 
 ## 6.- Match: First Iteration.
 
-
 # Definimos el path para el catalogo.
 path_catalog1 = path_base + 'cat_RA_'
 # Definimos parametros de 'match'.
@@ -104,7 +104,7 @@ parametros1 = 'trirad=0.002 nobj=15 max_iter=1 matchrad=1 scale=1'
 # Inicializamos una tabla.
 match1_tabla1 = Table(names=('RA_center', 'DEC_center', 'sig', 'Nr'))
 # Ciclo de busqueda para 0 <= RA < 360 y -80 <= DEC <= 80.
-for i in range (180, 230, 10):
+for i in range (0, 360, 10):
     # Define intervalo de RA (cada 10 deg).
     RA1 = i
     for j in range (-80, 90, 10):
@@ -148,7 +148,7 @@ for j in range (-90, 100, 180):
         match1_nr2 = match1_auxnr2.split(' ', 1)[0]
         match1_tabla1.add_row([str(RA2), str(DEC2), match1_sig2, match1_nr2])
 if len(match1_tabla1) == 0:
-    print 'No hay match'
+    print 'There is no match'
 else:
     ## Reordena la tabla por menor 'Nr'.
     match1_tabla1.sort('Nr')
@@ -239,7 +239,7 @@ else:
     match1_roll_d = (180/np.pi)*match1_roll_r
     # Prints.
     print '--/'*20
-    print 'Los resultados son:'
+    print 'The results are:'
     print 'RA_center =', match1_RA_new
     print 'DEC_center =', match1_DEC_new
     print 'Roll =', match1_roll_d
