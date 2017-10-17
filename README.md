@@ -10,6 +10,13 @@ This Git-Hub is free and open to everyone interested in using it. <br />
 1.- This ST code is based on two open softwares: Source Extractor and Match. In order to use it, you need to get this two software first.<br />
 1.1.- Get Source Extractor for: https://www.astromatic.net/software/sextractor.<br />
 1.2.- Get match for: http://spiff.rit.edu/match/. We use the version 0.14 in our Python program.<br />
-1.3.- Install the two programs in your Raspberry pi.<br />
+1.3.- Install the two programs in your Raspberry.<br />
 
-2.- Download the code for V2.0 and run in a Raspberry Pi.
+2.- Download the code for V2.0 and run it on your Raspberry.
+
+## Any questions?
+
+Contact: Samuel Gutiérrez Russell
+PhD student at Universidad de Chile, Santiago, Chile.
+
+Email:   samuel.gutierrez@ug.uchile.cl
