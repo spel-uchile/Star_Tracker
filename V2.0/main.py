@@ -9,7 +9,7 @@
 
 ## 1.- Variable reset and imports.
 
-%reset -f
+#%reset -f
 import os
 import subprocess
 import commands
