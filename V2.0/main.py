@@ -1,4 +1,4 @@
-### Star Tracker code.
+## Star Tracker code.
 ## For implementation in Raspberry Pi.
 
 ### AUTHOR:
