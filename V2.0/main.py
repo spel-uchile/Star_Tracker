@@ -2,14 +2,15 @@
 ## For implementation in Raspberry Pi.
 
 ### AUTHOR:
-## Samuel Gutiérrez Russell
-## Estudiante de Doctorado Ing. Eléctrica - Universidad de Chile.
+## Samuel Gutierrez Russell
+## Estudiante de Doctorado Ing. Electrica - Universidad de Chile.
 ## email: samuel.gutierrez@ug.uchile.cl
 
 
 ## 1.- Variable reset and imports.
 
 #%reset -f
+import re
 import os
 import subprocess
 import multiprocessing
@@ -19,6 +20,8 @@ import numpy as np
 from PIL import Image
 from astropy.io import fits, ascii
 from astropy.table import Table
+
+match_result_reg = re.compile(r"a=(-*\d\.\d+e...) b=(-*\d\.\d+e...) c=(-*\d\.\d+e...) d=(-*\d\.\d+e...) e=(-*\d\.\d+e...) f=(-*\d\.\d+e...) sig=(-*\d\.\d+e...) Nr=(-*\d+) Nm=(-*\d+) sx=(-*\d\.\d+e.+) sy=(-*\d\.\d+e...) ")
 
 ## 2.- Take a picture of the sky.
 
@@ -121,38 +124,32 @@ def call_match(ra_dec):
 ra_dec = [(ra, dec) for ra in range(0, 360, 10) for dec in range (-80, 90, 10)]
 
 #Op 1
-t1 = time.time()
-results = map(call_match, ra_dec)
-t2 = time.time()
-print("Time map serial {}".format(t2-t1))
+
+#results = map(call_match, ra_dec)
+#t2 = time.time()
+#print("Time map serial {}".format(t2-t1))
 
 #Op 2
-pool = multiprocessing.Pool(4)
-t1 = time.time()
+#t1 = time.time()
+pool = multiprocessing.Pool(2)
 results = pool.map(call_match, ra_dec)
-t2 = time.time()
-print("Time map multiprocessing {}".format(t2-t1))
+#t2 = time.time()
+#print("Time map multiprocessing {}".format(t2-t1))
 
-#Op 0
 t1 = time.time()
-# Ciclo de busqueda para 0 <= RA < 360 y -80 <= DEC <= 80.
-for i in range (0, 360, 10):
-    # Define intervalo de RA (cada 10 deg)
-    RA1 = i
-    for j in range (-80, 90, 10):
-        # Define intervalo de DEC (cada 10 deg).
-        DEC1 = j
-        status1, resultado1 = call_match(RA1, DEC1)
-        # Si hay 'match' se analizan sus resultados.
-        if status1 == 0:
-            # Busqueda de resultados estadisticos.
-            match1_aux1 = resultado1.find('sig=')
-            match1_aux2 = resultado1.find('Nr=')
-            match1_auxsig1 = resultado1[match1_aux1+4:match1_aux1+25]
-            match1_auxnr1 = resultado1[match1_aux2+3:match1_aux2+10]
-            match1_sig1 = match1_auxsig1.split(' ', 1)[0]
-            match1_nr1 = match1_auxnr1.split(' ', 1)[0]
-            match1_tabla1.add_row([str(RA1), str(DEC1), match1_sig1, match1_nr1])
+for i, (status1, resultado1) in enumerate(results):
+    RA1, DEC1 = ra_dec[i]
+
+
+    if status1 == 0:
+        # Busqueda de resultados estadisticos.
+        match1_aux1 = resultado1.find('sig=')
+        match1_aux2 = resultado1.find('Nr=')
+        match1_auxsig1 = resultado1[match1_aux1+4:match1_aux1+25]
+        match1_auxnr1 = resultado1[match1_aux2+3:match1_aux2+10]
+        match1_sig1 = match1_auxsig1.split(' ', 1)[0]
+        match1_nr1 = match1_auxnr1.split(' ', 1)[0]
+        match1_tabla1.add_row([str(RA1), str(DEC1), match1_sig1, match1_nr1])
 t2 = time.time()
 print("Time map original serial {}".format(t2-t1))
 
@@ -177,6 +174,8 @@ for j in range (-90, 100, 180):
         match1_sig2 = match1_auxsig2.split(' ', 1)[0]
         match1_nr2 = match1_auxnr2.split(' ', 1)[0]
         match1_tabla1.add_row([str(RA2), str(DEC2), match1_sig2, match1_nr2])
+
+
 if len(match1_tabla1) == 0:
     print 'There is no match'
 else:
@@ -219,40 +218,15 @@ else:
     Match3 = 'match ' + path_stars + ' 0 1 2 ' + path_catalog7 + ' 0 1 2 ' + parametros1
     # Prueba Match.
     resultado3 = subprocess.check_output(Match3, shell=True)
-    #Busqueda de parametros.
-    match1_aux5 = resultado3.find('a=')
-    match1_aux6 = resultado3.find('b=')
-    match1_aux7 = resultado3.find('c=')
-    match1_aux8 = resultado3.find('d=')
-    match1_aux9 = resultado3.find('e=')
-    match1_aux10 = resultado3.find('f=')
-    match1_aux11 = resultado3.find('sig=')
-    match1_aux12 = resultado3.find('Nr=')
-    match1_aux13 = resultado3.find('Nm=')
-    match1_auxa1 = resultado3[match1_aux5+2:match1_aux5+25]
-    match1_auxb1 = resultado3[match1_aux6+2:match1_aux6+25]
-    match1_auxc1 = resultado3[match1_aux7+2:match1_aux7+25]
-    match1_auxd1 = resultado3[match1_aux8+2:match1_aux8+25]
-    match1_auxe1 = resultado3[match1_aux9+2:match1_aux9+25]
-    match1_auxf1 = resultado3[match1_aux10+2:match1_aux10+25]
-    match1_auxsig3 = resultado3[match1_aux11+4:match1_aux11+25]
-    match1_auxnr3 = resultado3[match1_aux12+3:match1_aux12+10]
-    match1_auxnm3 = resultado3[match1_aux13+3:match1_aux13+10]
-    match1_sig3 = match1_auxsig3.split(' ', 1)[0]
-    match1_nr3 = match1_auxnr3.split(' ', 1)[0]
-    match1_nm3 = match1_auxnm3.split(' ', 1)[0]
-    match1_auxa2 = match1_auxa1.split(' ', 1)[0]
-    match1_auxb2 = match1_auxb1.split(' ', 1)[0]
-    match1_auxc2 = match1_auxc1.split(' ', 1)[0]
-    match1_auxd2 = match1_auxd1.split(' ', 1)[0]
-    match1_auxe2 = match1_auxe1.split(' ', 1)[0]
-    match1_auxf2 = match1_auxf1.split(' ', 1)[0]
-    match1_a = float(match1_auxa2)
-    match1_b = float(match1_auxb2)
-    match1_c = float(match1_auxc2)
-    match1_d = float(match1_auxd2)
-    match1_e = float(match1_auxe2)
-    match1_f = float(match1_auxf2)
+    print("MATCH3", resultado3)
+    res = match_result_reg.findall(resultado3)[0]
+    print(res)
+    match1_a = float(res[0])
+    match1_b = float(res[1])
+    match1_c = float(res[2])
+    match1_d = float(res[3])
+    match1_e = float(res[4])
+    match1_f = float(res[5])
     ## Busqueda de coordenadas RA/DEC del lugar del centro y 'roll'.
     # Traslacion y rotacion de la transformacion.
     match1_T = np.array([(match1_a), (match1_d)])
@@ -273,9 +247,9 @@ else:
     print 'RA_center =', match1_RA_new
     print 'DEC_center =', match1_DEC_new
     print 'Roll =', match1_roll_d
-    print 'sig =', match1_sig3
-    print 'Nr =', match1_nr3
-    print 'Nm =', match1_nm3
+    print 'sig =', res[6]
+    print 'Nr =', res[7]
+    print 'Nm =', res[8]
     print 'Catalogo => ', 'RA =', match1_RA, '/', 'DEC =', match1_DEC
     print '--/'*20
 
