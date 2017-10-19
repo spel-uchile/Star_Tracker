@@ -12,6 +12,8 @@
 #%reset -f
 import os
 import subprocess
+import multiprocessing
+import time
 import commands
 import numpy as np
 from PIL import Image
@@ -103,19 +105,44 @@ path_catalog1 = path_base + 'cat_RA_'
 parametros1 = 'trirad=0.002 nobj=15 max_iter=1 matchrad=1 scale=1'
 # Inicializamos una tabla.
 match1_tabla1 = Table(names=('RA_center', 'DEC_center', 'sig', 'Nr'))
+
+
+def call_match(ra_dec):
+    RA1, DEC1 = ra_dec
+    # Transforma en string RA y DEC y arma el path del catalogo.
+    path_catalog2 = str(RA1) + '_DEC_' + str(DEC1)
+    path_catalog3 = path_catalog1 + path_catalog2
+    # Se hace match.
+    Match1 = 'match ' + path_stars + ' 0 1 2 ' + path_catalog3 + ' 0 1 2 ' + parametros1
+    status1, resultado1 = commands.getstatusoutput(Match1)
+    return status1, resultado1
+
+# Create the list of parameters
+ra_dec = [(ra, dec) for ra in range(0, 360, 10) for dec in range (-80, 90, 10)]
+
+#Op 1
+t1 = time.time()
+results = map(call_match, ra_dec)
+t2 = time.time()
+print("Time map serial {}".format(t2-t1))
+
+#Op 2
+pool = multiprocessing.Pool(4)
+t1 = time.time()
+results = pool.map(call_match, ra_dec)
+t2 = time.time()
+print("Time map multiprocessing {}".format(t2-t1))
+
+#Op 0
+t1 = time.time()
 # Ciclo de busqueda para 0 <= RA < 360 y -80 <= DEC <= 80.
 for i in range (0, 360, 10):
-    # Define intervalo de RA (cada 10 deg).
+    # Define intervalo de RA (cada 10 deg)
     RA1 = i
     for j in range (-80, 90, 10):
         # Define intervalo de DEC (cada 10 deg).
         DEC1 = j
-        # Transforma en string RA y DEC y arma el path del catalogo.
-        path_catalog2 = str(RA1) + '_DEC_' + str(DEC1)
-        path_catalog3 = path_catalog1 + path_catalog2
-        # Se hace match.
-        Match1 = 'match ' + path_stars + ' 0 1 2 ' + path_catalog3 + ' 0 1 2 ' + parametros1
-        status1, resultado1 = commands.getstatusoutput(Match1)
+        status1, resultado1 = call_match(RA1, DEC1)
         # Si hay 'match' se analizan sus resultados.
         if status1 == 0:
             # Busqueda de resultados estadisticos.
@@ -126,6 +153,9 @@ for i in range (0, 360, 10):
             match1_sig1 = match1_auxsig1.split(' ', 1)[0]
             match1_nr1 = match1_auxnr1.split(' ', 1)[0]
             match1_tabla1.add_row([str(RA1), str(DEC1), match1_sig1, match1_nr1])
+t2 = time.time()
+print("Time map original serial {}".format(t2-t1))
+
 #Ciclo de busqueda para RA = 0 y DEC = +- 90 deg.
 RA2 = 0
 for j in range (-90, 100, 180):
