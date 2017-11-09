@@ -1,8 +1,8 @@
 # Star Tracker
 
 Star Tracker development for SUCHAI 2 - 3. <br />
-SUCHAI 1 is the first NanoSatellite developed at Universidad de Chile, in the Space and Planetary Exploration Laboratory (SPEL). Currently, we are working in two more NanoSats, the SUCHAI 2 & 3. <br />
-[More info](http://spel.ing.uchile.cl).
+SUCHAI 1 is the first NanoSatellite developed at Universidad de Chile, in the 
+Space and Planetary Exploration Laboratory (SPEL). Currently, we are working in two more NanoSats, the SUCHAI 2 & 3. [More info](http://spel.ing.uchile.cl).
 
 ## Description
 
