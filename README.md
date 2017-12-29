@@ -1,9 +1,10 @@
 # Star Tracker
 
-This GitHub contains the Star Tracker (ST) development for SUCHAI 2 - 3. <br />
+This GitHub contains the Star Tracker (ST) development for SUCHAI 2 - 3. 
 SUCHAI 1 is the first NanoSatellite developed by Universidad de Chile, at the 
-Space and Planetary Exploration Laboratory (SPEL). Launched on June 23 (2017), the satellite is currently operational. <br />
-Actually, we are working in two more NanoSats, the SUCHAI 2 & 3. [More info about the SUCHAI proyect](http://spel.ing.uchile.cl).
+Space and Planetary Exploration Laboratory (SPEL). Launched on June 23 (2017), 
+the satellite is currently operational. Actually, we are working in two more NanoSats, the SUCHAI 2 & 3. <br />
+[More info about the SUCHAI proyect](http://spel.ing.uchile.cl).
 
 ## Description
 
@@ -15,12 +16,12 @@ Actually, we are working in two more NanoSats, the SUCHAI 2 & 3. [More info abou
 
 1. This ST code is based on two open softwares: __Source Extractor__ and __Match__. In order to use it, you need this two software first.<br />
     1.1. Get [Source Extractor](https://www.astromatic.net/software/sextractor). <br />
-    1.2. Get [Match](http://spiff.rit.edu/match/). We use __version 0.14__ in our _Python_ program. <br />
+    1.2. Get [Match](http://spiff.rit.edu/match/). We use __version 0.14__ in our program. <br />
     1.3. Install this two programs in your RPI. <br />
 
 2. Clone this repository in any folder on your RPI, for example: __/home/pi/Desktop/ST/__
 
-3. Run in _Python_ the file _StarTracker_10deg.py_. By default, it will use a picture from __RPI/Sample_Images/__. You can test with other pictures, or use your own taked with the RPI Camera.
+3. Run in _Python_ the file _StarTracker_10deg.py_. By default, it will use a picture from __/RPI/Sample_Images/__. You can test with other pictures, or use your own taked with the RPI Camera.
 
 ## Any questions?
 
