@@ -19,8 +19,8 @@ the satellite is currently operational. Actually, we are working on two more Nan
 1. This ST code is based on two open softwares usually used in Astronomy: __Source Extractor__ and __Match__. In order to use this program, you need to install this two software first.<br />
     1.1.- Get and install [Source Extractor.](https://www.astromatic.net/software/sextractor) 
 You can find this program in the RPI repository, and install it typing: <br />
-_sudo apt-get install sextractor_ <br />
-We use __version 2.19.5__ in opur program. <br />
+        _sudo apt-get install sextractor_ <br />
+We use __version 2.19.5__ in our program. <br />
     1.2.- Get and install [Match](http://spiff.rit.edu/match/). We use __version 0.14__ in our program. <br />
 
 2. Clone this repository in any folder on your RPI, for example: __/home/pi/Desktop/Git/ST/__
