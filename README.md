@@ -1,5 +1,7 @@
 # Star Tracker
 
+## Overview
+
 This GitHub contains the Star Tracker (ST) development for SUCHAI 2 - 3. 
 SUCHAI 1 is the first NanoSatellite developed by Universidad de Chile, at the 
 Space and Planetary Exploration Laboratory (SPEL). Launched on June 23 (2017), 
