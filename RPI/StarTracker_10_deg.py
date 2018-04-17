@@ -2,8 +2,8 @@
 ## INFORMATION
 #
 # 1.- AUTHOR: Samuel Gutierrez Russell
-# 2.- CONTACT: samuel.gutierrez@ug.uchile.cl
-# 3.- This is the full Star Tracker code, developed to run in a Raspberry Pi.
+# 2.- CONTACT: samuel.gutierrez at ug.uchile.cl
+# 3.- This is the full Star Tracker code, developed to run on a Raspberry Pi.
 # 4.- With this code, you can also measure the time of execution.
 
 ## CODE INSTRUCTIONS
@@ -51,8 +51,12 @@ os.system(take_img)
 
 time3 = time.time()
 # Get current directory.
-Cur_Dir = os.getcwd()
+#Cur_Dir = os.getcwd()
+Cur_Dir = os.path.dirname(os.path.abspath(__file__))
 Cur_Dir = Cur_Dir + '/'
+print '--- 0 0 ---'
+print Cur_Dir
+print '--- 0 0 ---'
 # Img .jpg name.
 #img_jpg_name = 'img.jpg'
 nombre_img_jpg = '26_07_-_21_01_51_image7_800.jpg'
