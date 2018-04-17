@@ -1,32 +1,34 @@
 
-## INFORMATION
+# INFORMATION
+# -----------
 #
 # 1.- AUTHOR: Samuel Gutierrez Russell
-# 2.- CONTACT: samuel.gutierrez at ug.uchile.cl
-# 3.- This is the full Star Tracker code, developed to run on a Raspberry Pi.
-# 4.- With this code, you can also measure the time of execution.
+# 2.- CONTACT: samuel.gutierrez-at-ug.uchile.cl
+# 3.- This is the full Star Tracker (ST) code, developed to run on a Raspberry Pi.
+# 4.- This code also measure and shows execution time.
 
-## CODE INSTRUCTIONS
+# CODE INSTRUCTIONS
+# -----------------
 #
 # 1.- Import libraries.
 # 2.- Take a picture of the sky, with a predefined exposure time of 800 ms.
-#     You can change it, or comment it and read a stored photo.
-# 3.- Define directories and the names that will be used.
-# 4.- Transforma la imagen a .fits.
-# 5.- Ejecuta SExtractor.
-# 6.- Primera iteracion con match.
-# 7.- Deproyecta el punto central de la camara.
-# 8.- Busqueda y lectura de objetos de catalogo con los que se hace match. 
+#     You can change it, or also, comment it and read a stored picture.
+# 3.- Define directories and names that will be used.
+# 4.- Take the image from '.jpg' to '.fits' format.
+# 5.- Runs SExtractor.
+# 6.- Match: First iteration.
+# 7.- De-project the central point of the camera.
+# 8.- Searching and readingBusqueda y lectura de objetos de catalogo con los que se hace match.
 # 9.- Conversion de coordenadas de estrellas de match a plano tangente.
-# 10.- Se hace el nuevo match (Segunda iteracion).
+# 10.- Match: Second iteration.
 # 11.- Vuelve a deproyectar el punto central de la camara.
 # 12.- Nueva conversion de estrellas de match a plano tangente.  
-# 13.- Se hace el nuevo match (Terecera iteracion).
+# 13.- Match: Third and final iteration.
 # 14.- Vuelve a deproyectar el punto central de la camara. Esta es la solucion final.
 
-## ---------------------------------------- // ---------------------------------------- ##
+# ---------------------------------------- // ----------------------------------------
 
-## 1.- Import libraries.
+# 1.- Import libraries.
 
 import time
 time1 = time.time()
@@ -41,22 +43,23 @@ from PIL import Image
 from astropy.io import fits, ascii
 from astropy.table import Table
 
-## 2.- Take image.
+# 2.- Take the picture.
 
 time2 = time.time()
 take_img = 'raspistill -ss 800000 -w 1024 -h 1024 -o img.jpg'
 os.system(take_img)
 
-## 3.- Define names and directories.
+# 3.- Define names and directories.
 
 time3 = time.time()
 # Get current directory.
 #Cur_Dir = os.getcwd()
-Cur_Dir = os.path.dirname(os.path.abspath(__file__))
-Cur_Dir = Cur_Dir + '/'
+Cur_Dir = os.path.dirname(os.path.abspath(__file__)) + '/'
+
 print '--- 0 0 ---'
 print Cur_Dir
 print '--- 0 0 ---'
+
 # Img .jpg name.
 #img_jpg_name = 'img.jpg'
 nombre_img_jpg = '26_07_-_21_01_51_image7_800.jpg'
@@ -544,10 +547,10 @@ print '-'*20
 time5 = time.time()
 
 print '-.-'*20
-print 'Los tiempos de proceso son:'
-print 'Importacion:', time2 - time1
-print 'Foto:', time3 - time2
-print 'SExtractor:', time4 - time3
-print 'Rutinas con match:', time5 - time4
-print 'Total:', time5 - time1
+print 'Processing time:'
+print '- Imports:       ', time2 - time1, 'seconds.'
+print '- Picture:       ', time3 - time2, 'seconds.'
+print '- SExtractor:    ', time4 - time3, 'seconds.'
+print '- Match routines:', time5 - time4, 'seconds.'
+print '- Total time:    ', time5 - time1, 'seconds.'
 print '-.-'*20
