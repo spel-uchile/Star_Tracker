@@ -1,7 +1,7 @@
 # 1.- Import libraries.
 import sys
 import time
-
+import sqlite3
 import os
 import re
 import subprocess
@@ -12,8 +12,9 @@ from PIL import Image
 from astropy.io import fits, ascii
 from astropy.table import Table
 
-
-pic_name = sys.argv[1]
+tm1 = time.time()
+#pic_name = sys.argv[1]
+pic_name = '/home/samuel/Github/Star_Tracker/RPI/Sample_images/26_07_-_20_41_51_image7_800.jpg'
 # Get current directory.
 Cur_Dir = os.path.dirname(os.path.abspath(__file__)) + '/'
 
@@ -86,7 +87,6 @@ ascii.write([sex_x1, sex_y1, sex_mag], 'sext', delimiter = ' ', format = 'no_hea
 
 ## 6.- Match: First iteration.
 
-time4 = time.time()
 # Define regular expresion for Match.
 match_reg = re.compile(r"a=(-*\d\.\d+e...) b=(-*\d\.\d+e...) c=(-*\d\.\d+e...) d=(-*\d\.\d+e...) e=(-*\d\.\d+e...) f=(-*\d\.\d+e...) sig=(-*\d\.\d+e...) Nr=(-*\d+) Nm=(-*\d+) sx=(-*\d\.\d+e...) sy=(-*\d\.\d+e...) ")
 # Definimos el path para el catalogo.
@@ -238,7 +238,7 @@ else:
 
 ## 7.- Deproyeccion del punto (0, 0) de la camara.
 
-f = 3.04 #mm
+f = 3.04
 dep1_xi = match1_RA_new/f
 dep1_eta = match1_DEC_new/f
 dep1_RA_r = match1_RA*(np.pi/180)
@@ -452,4 +452,21 @@ dep3_arg3 = np.sin(dep3_arg2)
 dep3_arg4 = dep3_eta*np.cos(dep3_DEC_r) + np.sin(dep3_DEC_r)
 dep3_delta1 = (180/np.pi)*np.arctan((dep3_arg3*dep3_arg4)/dep3_xi)
 
+tm2 = time.time()
+tm3 = tm2 - tm1
 
+fname_conn = '/tmp/suchai.db'
+conn = sqlite3.connect(fname_conn)
+
+c = conn.cursor()
+# Create table
+c.execute('''CREATE TABLE IF NOT EXISTS startracker
+             (date_time text, path text, ra real, dec real, roll real, exec_time real)''')
+
+# Insert a row of data
+command_string = "INSERT INTO startracker VALUES (datetime(\"now\"), \"" + str(pic_name) + "\" , " + str(dep3_alpha1) + ", " + str(dep3_delta1) + ", " + str(match3_roll_d) + ", " + str(tm3) + ")"
+print(command_string)
+c.execute(command_string)
+
+conn.commit()
+conn.close()
