@@ -147,6 +147,7 @@ for j in range (-90, 100, 180):
         match1_tabla1.add_row([str(RA2), str(DEC2), match1_sig2, match1_nr2])
 if len(match1_tabla1) == 0:
     print 'No hay match'
+    exit()
 else:
     ## Reordena la tabla por menor 'Nr'.
     match1_tabla1.sort('Nr')
