@@ -13,8 +13,7 @@ from astropy.io import fits, ascii
 from astropy.table import Table
 
 tm1 = time.time()
-#pic_name = sys.argv[1]
-pic_name = '/home/samuel/Github/Star_Tracker/RPI/Sample_images/26_07_-_20_41_51_image7_800.jpg'
+pic_name = sys.argv[1]
 # Get current directory.
 Cur_Dir = os.path.dirname(os.path.abspath(__file__)) + '/'
 
