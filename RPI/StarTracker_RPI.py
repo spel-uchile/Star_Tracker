@@ -12,6 +12,7 @@ from PIL import Image
 from astropy.io import fits, ascii
 from astropy.table import Table
 
+# 2.- Code.
 tm1 = time.time()
 pic_name = sys.argv[1]
 # Get current directory.
