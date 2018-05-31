@@ -53,7 +53,6 @@ os.system(take_img)
 
 time3 = time.time()
 # Get current directory.
-#Cur_Dir = os.getcwd()
 Cur_Dir = os.path.dirname(os.path.abspath(__file__)) + '/'
 
 print '--- 0 0 ---'
