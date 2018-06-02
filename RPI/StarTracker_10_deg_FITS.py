@@ -515,12 +515,3 @@ print '-'*20
 print 'RA =', dep3_alpha1
 print 'DEC =', dep3_delta1
 print '-'*20
-
-print '-.-'*20
-print 'Processing time:'
-print '- Imports:       ', time2 - time1, 'seconds.'
-print '- Picture:       ', time3 - time2, 'seconds.'
-print '- SExtractor:    ', time4 - time3, 'seconds.'
-print '- Match routines:', time5 - time4, 'seconds.'
-print '- Total time:    ', time5 - time1, 'seconds.'
-print '-.-'*20
