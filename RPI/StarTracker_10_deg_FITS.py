@@ -36,8 +36,7 @@ import subprocess
 import multiprocessing
 import commands
 import numpy as np
-from PIL import Image
-from astropy.io import fits, ascii
+from astropy.io import ascii
 from astropy.table import Table
 
 # 3.- Define names and directories.
@@ -45,10 +44,6 @@ from astropy.table import Table
 # Get current directory.
 pic_name = sys.argv[1]
 Cur_Dir = os.path.dirname(os.path.abspath(__file__)) + '/'
-
-print '--- 0 0 ---'
-print Cur_Dir
-print '--- 0 0 ---'
 
 # Img .jpg name.
 #img_jpg_name = 'img.jpg'
@@ -62,11 +57,11 @@ nombre_img_fits = pic_name
 # Directorio SExtractor.
 dir_sext = './sextractor'
 # Directorio base del catalogo proyectado.
-path_base = './Catalog/Projected/'
+path_base = './STEREO_cat_10/Proyectado/'
 # Directorio donde se guarda el archivo 'sext'.
 path_stars = dir_img_fits + 'sext'
 # Directorio base de catalogo no proyectado.
-cat_no_proy = './Catalog/Normal/'
+cat_no_proy = './STEREO_cat_10/Normal/'
 # Directorio donde se guarda el catalogo proyectado en el punto que entrega como resultado el primer Match.
 new_path_catalog = dir_img_fits + 'new_cat'
 
@@ -75,7 +70,6 @@ new_path_catalog = dir_img_fits + 'new_cat'
 # Cambia el directorio al de SExtractor.
 os.chdir(dir_sext)
 # Define el directorio de la imagen.
-print nombre_img_fits
 #aux11 = nombre_img_fits.split()
 #nombre_img_fits = aux11[0] + "\ " + aux11[1]
 #print nombre_img_fits
@@ -95,8 +89,8 @@ sex_x = sex_aux2['X_IMAGE']
 sex_y = sex_aux2['Y_IMAGE']
 sex_mag = sex_aux2['MAG_ISO']
 # Conversion a coordenadas de CMOS.
-sex_x1 = (sex_x - 512)*0.00270   # queda en mm centrada en (0,0)
-sex_y1 = (sex_y - 512)*0.00270   # queda en mm centrada en (0,0)
+sex_x1 = (sex_x - 512)*0.027   # queda en mm centrada en (0,0)
+sex_y1 = (sex_y - 512)*0.027   # queda en mm centrada en (0,0)
 # Guarda las columnas X, Y y MAG del resultado de Sextractor.
 ascii.write([sex_x1, sex_y1, sex_mag], 'sext', delimiter = ' ', format = 'no_header', formats = {'col0':'% 15.10f', 'col1':'% 15.10f', 'col2':'% 15.10f'})
 
@@ -108,6 +102,7 @@ match_reg = re.compile(r"a=(-*\d\.\d+e...) b=(-*\d\.\d+e...) c=(-*\d\.\d+e...) d
 path_catalog1 = path_base + 'cat_RA_'
 # Definimos parametros de 'match'.
 parametros1 = 'trirad=0.002 nobj=15 max_iter=1 matchrad=1 scale=1'
+#parametros1 = 'trirad=0.002 nobj=15 max_iter=1'
 # Inicializamos una tabla.
 match1_tabla1 = Table(names=('RA_center', 'DEC_center', 'sig', 'Nr'))
 
@@ -161,7 +156,7 @@ for j in range (-90, 100, 180):
         match1_nr2 = match1_auxnr2.split(' ', 1)[0]
         match1_tabla1.add_row([str(RA2), str(DEC2), match1_sig2, match1_nr2])
 if len(match1_tabla1) == 0:
-    print 'No hay match'
+    print ' --- No hay match --- '
 else:
     ## Reordena la tabla por menor 'Nr'.
     match1_tabla1.sort('Nr')
@@ -264,7 +259,7 @@ else:
 
 ## 7.- Deproyeccion del punto (0, 0) de la camara.
 
-f = 3.04 #mm
+f = 78.46 #mm
 dep1_xi = match1_RA_new/f
 dep1_eta = match1_DEC_new/f
 dep1_RA_r = match1_RA*(np.pi/180)
@@ -336,6 +331,7 @@ ascii.write(cat_tran1, 'new_cat', delimiter = ' ', format = 'no_header', formats
 ## 10.- Se hace el nuevo match (Segunda iteracion).
 
 new_parametros1 = 'trirad=0.002 nobj=20 max_iter=3 matchrad=1 scale=1'
+#new_parametros1 = 'trirad=0.002 nobj=20 max_iter=3'
 Match4 = 'match ' + path_stars + ' 0 1 2 ' + new_path_catalog + ' 0 1 2 ' + new_parametros1
 resultado4 = subprocess.check_output(Match4, shell=True)
 #Busqueda de parametros.
@@ -442,6 +438,7 @@ ascii.write(cat_tran2, 'new_cat', delimiter = ' ', format = 'no_header', formats
 ## 13.- Se hace el nuevo match (Tercera iteracion).
 
 new_parametros2 = 'trirad=0.002 nobj=20 max_iter=3 matchrad=1 scale=1'
+#new_parametros2 = 'trirad=0.002 nobj=20 max_iter=3'
 Match5 = 'match ' + path_stars + ' 0 1 2 ' + new_path_catalog + ' 0 1 2 ' + new_parametros2
 resultado5 = subprocess.check_output(Match5, shell=True)
 #Busqueda de parametros.
