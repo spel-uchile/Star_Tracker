@@ -39,6 +39,8 @@ import numpy as np
 from astropy.io import ascii
 from astropy.table import Table
 
+file = open('data_file.txt','w')
+
 # 3.- Define names and directories.
 
 # Get current directory.
@@ -330,8 +332,8 @@ ascii.write(cat_tran1, 'new_cat', delimiter = ' ', format = 'no_header', formats
 
 ## 10.- Se hace el nuevo match (Segunda iteracion).
 
-new_parametros1 = 'trirad=0.002 nobj=20 max_iter=3 matchrad=1 scale=1'
-#new_parametros1 = 'trirad=0.002 nobj=20 max_iter=3'
+#new_parametros1 = 'trirad=0.002 nobj=20 max_iter=3 matchrad=1 scale=1'
+new_parametros1 = 'trirad=0.002 nobj=20 max_iter=3'
 Match4 = 'match ' + path_stars + ' 0 1 2 ' + new_path_catalog + ' 0 1 2 ' + new_parametros1
 resultado4 = subprocess.check_output(Match4, shell=True)
 #Busqueda de parametros.
@@ -437,8 +439,8 @@ ascii.write(cat_tran2, 'new_cat', delimiter = ' ', format = 'no_header', formats
 
 ## 13.- Se hace el nuevo match (Tercera iteracion).
 
-new_parametros2 = 'trirad=0.002 nobj=20 max_iter=3 matchrad=1 scale=1'
-#new_parametros2 = 'trirad=0.002 nobj=20 max_iter=3'
+#new_parametros2 = 'trirad=0.002 nobj=20 max_iter=3 matchrad=1 scale=1'
+new_parametros2 = 'trirad=0.002 nobj=20 max_iter=3'
 Match5 = 'match ' + path_stars + ' 0 1 2 ' + new_path_catalog + ' 0 1 2 ' + new_parametros2
 resultado5 = subprocess.check_output(Match5, shell=True)
 #Busqueda de parametros.
@@ -512,3 +514,6 @@ print '-'*20
 print 'RA =', dep3_alpha1
 print 'DEC =', dep3_delta1
 print '-'*20
+
+file.write('RA: ' + str(dep3_alpha1) + '\n')
+file.write(' --- END --- ')
