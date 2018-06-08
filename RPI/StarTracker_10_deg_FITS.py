@@ -39,7 +39,7 @@ import numpy as np
 from astropy.io import ascii
 from astropy.table import Table
 
-file = open('data_file.txt','w')
+file = open('data_file.txt','a')
 
 # 3.- Define names and directories.
 
@@ -515,5 +515,11 @@ print 'RA =', dep3_alpha1
 print 'DEC =', dep3_delta1
 print '-'*20
 
-file.write('RA: ' + str(dep3_alpha1) + '\n')
-file.write(' --- END --- ')
+if dep3_alpha1 > 180.0:
+    dep3_alpha1 = dep3_alpha1 - 360.0
+
+if match3_roll_d > 180.0:
+    match3_roll_d = match3_roll_d - 360.0
+
+text_to_write = pic_name + ' '+ str(dep3_alpha1) + ' ' + str(dep3_delta1) + ' ' + str(match3_roll_d) + '\n'
+file.write(text_to_write)
