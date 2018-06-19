@@ -518,8 +518,10 @@ print '-'*20
 if dep3_alpha1 > 180.0:
     dep3_alpha1 = dep3_alpha1 - 360.0
 
-if match3_roll_d > 180.0:
-    match3_roll_d = match3_roll_d - 360.0
+if match3_roll_d < 0.0:
+    match3_roll_d = match3_roll_d + 180.0
+elif match3_roll_d > 0.0:
+    match3_roll_d = match3_roll_d - 180.0
 
 text_to_write = pic_name + ' '+ str(dep3_alpha1) + ' ' + str(dep3_delta1) + ' ' + str(match3_roll_d) + '\n'
 file.write(text_to_write)
