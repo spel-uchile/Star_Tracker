@@ -46,7 +46,7 @@ from astropy.table import Table
 # 2.- Take the picture.
 
 time2 = time.time()
-take_img = 'raspistill -ss 800000 -w 1024 -h 1024 -o img.jpg'
+take_img = 'raspistill -n -ss 800000 -w 1024 -h 1024 -o img.jpg'
 os.system(take_img)
 
 # 3.- Define names and directories.
