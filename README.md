@@ -11,23 +11,24 @@ the satellite is currently operational. Actually, we are working on two more Nan
 ## Description
 
 - This is a fully functional Star Tracker that you can try on a Linux PC. Nevertheless, the main idea is to use it with a Raspberry Pi and its camera in an autonomously way. <br />
-- This code is written in _Python_. All the code and the necessary files are in the __RPI__ folder. <br />
+- This code is written in _Python 2.7_. All the code and the necessary files are in the __RPI__ folder. <br />
 - This Git-Hub is __free__ and __open__ to everyone interested in using it, __especially researchers working on CubeSats!__. <br />
 
 ## Installation instructions
 
-1. This ST code is based on two open softwares usually used in Astronomy: __Source Extractor__ and __Match__. In order to use this program, you need to install this two software first.<br />
+1. This ST code is based on two open softwares usually used in Astronomy: __Source Extractor__ and __Match__. To use this ST program, you need to install this two software first.<br />
     1.1.- Get and install [Source Extractor.](https://www.astromatic.net/software/sextractor) 
 You can find this program in the Linux (RPI) repository, and install it by typing: <br />
-<div class="align-center"> _sudo apt-get install sextractor_ <br /></div>
+_sudo apt-get install sextractor_ <br />
 We use __version 2.19.5__ in our program. <br />
     1.2.- Get and install [Match](http://spiff.rit.edu/match/). We use __version 0.14__ in our program. <br />
 
-2.
+2. This ST program uses the [Astropy](http://www.astropy.org) package. You can install it by tiping: <br />
+_pip install astropy_ <br />
  
 3. Finally, clone this repository in any folder on your RPI, for example: __/home/pi/Desktop/Git/ST/__
 
-## Running instructions
+## Instructions for use
 
 ### To use it with Raspberry Pi pictures
 
@@ -43,6 +44,8 @@ Contact: Samuel Gutiérrez Russell. <br />
 PhD student in Electrical Engineering at Universidad de Chile, Santiago, Chile. <br />
 e-mail: samuel.gutierrez@ug.uchile.cl
 
-###  <br />
+<br />
+<br />
+
 README updated August 31, 2018 by SGR.
 
