@@ -1,6 +1,6 @@
 # Star Tracker <br />
 
-## Overview
+## 1.- Overview
 
 This GitHub contains the Star Tracker (ST) development for SUCHAI 2 - 3. 
 SUCHAI-1 is the first NanoSatellite developed by Universidad de Chile, at the 
@@ -8,13 +8,13 @@ Space and Planetary Exploration Laboratory (SPEL). Launched on June 23 (2017),
 the satellite is currently operational. Actually, we are working on two more NanoSatellites, the SUCHAI 2 & 3. <br />
 [More info about the SUCHAI proyect.](http://spel.ing.uchile.cl)
 
-## Description
+## 2.- Description
 
 - This is a fully functional Star Tracker that you can try on a Linux PC. Nevertheless, the main idea is to use it with a Raspberry Pi and its camera in an autonomously way. <br />
 - This code is written in _Python 2.7_. All the code and the necessary files are in the __RPI__ folder. <br />
 - This Git-Hub is __free__ and __open__ to everyone interested in using it, __especially researchers working on CubeSats!__. <br />
 
-## Installation instructions
+## 3.- Installation instructions
 
 1. This ST code is based on two open softwares commonly used in Astronomy: __Source Extractor__ and __Match__. To use this ST program, you need to install this two software first.<br />
     1.1.- Get and install [Source Extractor.](https://www.astromatic.net/software/sextractor) 
@@ -28,20 +28,22 @@ We use __version 2.19.5__ in our program. <br />
  
 3. Finally, clone this repository in any folder on your RPI, for example: __/home/pi/Desktop/Git/ST/__
 
-## Instructions for use
+## 4.- Instructions for use
 
-### To use it with Raspberry Pi pictures
+### 4.1.- To use it with Raspberry Pi pictures
 
 1. For a 10 degrees catalog separation, run in _Python_ the file _StarTracker_10_deg.py_. By default, 
 it will use a picture from __/RPI/Sample_Images/__. Also, you can test it with other pictures, or use your own pictures taked with your RPI Camera.
 
 2. For a 5 degrees catalog separation, run in _Python_ the file _StarTracker_5_deg.py_.
 
-### To use it with STEREO pictures
+### 4.2.- To use it with [STEREO](https://stereo.gsfc.nasa.gov/) pictures
 
+1. For a 10 degrees catalog separation, run in _Python_ the file _StarTracker_10_deg_FITS.py_.
 
+2. For a 5 degrees catalog separation, run in _Python_ the file _StarTracker_5_deg_FITS.py_.
 
-## Any questions?
+## 5.- Any questions?
 
 Contact: Samuel Gutiérrez Russell. <br />
 PhD student in Electrical Engineering at Universidad de Chile, Santiago, Chile. <br />
