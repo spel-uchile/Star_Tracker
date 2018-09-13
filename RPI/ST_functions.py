@@ -19,10 +19,12 @@ def names_and_dir():
     dir_stars = dir_img_fits + 'sext'
     dir_first_match = dir_img_fits + 'new_cat'
     dir_sext = './sextractor'
-    dir_proj_cat = './Catalog/Projected/'
+    dir_proj_cat1 = './Catalog/Projected/'
+    dir_proj_cat2 = dir_proj_cat1 + 'cat_RA_'
     dir_normal_cat = './Catalog/Normal/'
     fits_name = 'img_fits.fits'
-    return dir_this, dir_img_fits, dir_stars, dir_first_match, dir_sext, dir_proj_cat, dir_normal_cat, fits_name
+    return dir_this, dir_img_fits, dir_stars, dir_first_match, dir_sext, dir_proj_cat1,\
+           dir_proj_cat2, dir_normal_cat, fits_name
 
 
 # Define significant constant values.
@@ -98,3 +100,14 @@ def apply_sext(dir_sext, dir_img_fits, fits_name, x_pix, y_pix, cmos2pix):
     ascii.write([sext_x1, sext_y1, sext_mag], sext_fname, delimiter=' ', format='no_header', overwrite=True,
                 formats={'X': '% 15.10f', 'Y': '% 15.10f', 'Z': '% 15.10f'}, names=['X', 'Y', 'Z'])
     return 0
+
+
+# Execute 'match' in the shell.
+def call_match(ra_dec_list, DIR_stars, dir_proj_cat2, param1):
+    ra, dec = ra_dec_list
+    path_catalog1 = str(ra) + '_DEC_' + str(dec)
+    path_catalog2 = dir_proj_cat2 + path_catalog1
+    # Do Match.
+    Match = 'match ' + DIR_stars + ' 0 1 2 ' + path_catalog2 + ' 0 1 2 ' + param1
+    status, result = commands.getstatusoutput(Match)
+    return status, result
