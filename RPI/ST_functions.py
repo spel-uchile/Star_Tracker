@@ -9,6 +9,7 @@ import numpy as np
 from PIL import Image
 from astropy.io import fits, ascii
 from astropy.table import Table
+import platform
 
 
 # Define directories and names.
@@ -67,7 +68,10 @@ def generate_fits(pic_name, fits_name):
     imagebw = image.convert('L')
     xsize, ysize = imagebw.size
     fits1 = imagebw.getdata()
-    fits2 = np.array(fits1)
+    if platform.machine().endswith('64'):
+        fits2 = np.array(fits1, dtype=np.int32)
+    else:
+        fits2 = np.array(fits1)
     fits3 = fits2.reshape(ysize, xsize)
     fits4 = np.flipud(fits3)
     fits5 = fits.PrimaryHDU(data=fits4)
