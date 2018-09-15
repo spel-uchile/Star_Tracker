@@ -3,7 +3,6 @@ import time
 import os
 import re
 import subprocess
-import multiprocessing
 import commands
 import numpy as np
 from PIL import Image
@@ -23,8 +22,8 @@ def names_and_dir():
     dir_proj_cat2 = dir_proj_cat1 + 'cat_RA_'
     dir_normal_cat = './Catalog/Normal/'
     fits_name = 'img_fits.fits'
-    return dir_this, dir_img_fits, dir_stars, dir_first_match, dir_sext, dir_proj_cat1,\
-           dir_proj_cat2, dir_normal_cat, fits_name
+    return dir_this, dir_img_fits, dir_stars, dir_first_match, dir_sext, dir_proj_cat1, \
+        dir_proj_cat2, dir_normal_cat, fits_name
 
 
 # Define significant constant values.
@@ -102,12 +101,34 @@ def apply_sext(dir_sext, dir_img_fits, fits_name, x_pix, y_pix, cmos2pix):
     return 0
 
 
-# Execute 'match' in the shell.
-def call_match(ra_dec_list, DIR_stars, dir_proj_cat2, param1):
+# Define RA/DEC list for 10 degrees separation.
+def ra_dec_10():
+    ra_dec_list = [(ra, dec) for ra in range(0, 360, 10) for dec in range(-80, 90, 10)] + [(0, 90), (0, -90)]
+    return ra_dec_list
+
+
+# Define RA/DEC list for 5 degrees separation.
+def ra_dec_5():
+    ra_dec_list = [(ra, dec) for ra in range(0, 360, 5) for dec in range(-85, 90, 5)] + [(0, 90), (0, -90)]
+    return ra_dec_list
+
+
+# Define and set 'match' before calling it in the shell.
+def set_match(ra_dec_str, dir_stars, dir_proj_cat2, param):
+    match_str = 'match ' + dir_stars + ' 0 1 2 ' + dir_proj_cat2 + ra_dec_str + ' 0 1 2 ' + param
+    return match_str
+
+
+# Variables for use in 'set_call_match' inside 'call_match'.
+DIR_stars = names_and_dir()[2]
+DIR_proj_cat2 = names_and_dir()[6]
+param1 = 'trirad=0.002 nobj=15 max_iter=1 matchrad=1 scale=1'
+
+
+# Call 'Match' with RA/DEC list in the shell.
+def call_match(ra_dec_list):
     ra, dec = ra_dec_list
-    path_catalog1 = str(ra) + '_DEC_' + str(dec)
-    path_catalog2 = dir_proj_cat2 + path_catalog1
-    # Do Match.
-    Match = 'match ' + DIR_stars + ' 0 1 2 ' + path_catalog2 + ' 0 1 2 ' + param1
-    status, result = commands.getstatusoutput(Match)
+    ra_dec_str = str(ra) + '_DEC_' + str(dec)
+    match = set_match(ra_dec_str, DIR_stars, DIR_proj_cat2, param1)
+    status, result = commands.getstatusoutput(match)
     return status, result

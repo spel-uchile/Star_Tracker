@@ -29,6 +29,7 @@ st_args = sys.argv
 len_arg = len(st_args)
 pic_name, cat_division = ST_functions.rev_initial_data(st_args, len_arg)
 
+# - First review.
 print '-.'*30
 print 'REVIEW - 1:'
 print 'Initial arguments:', st_args
@@ -40,8 +41,34 @@ print '-.'*30
 ST_functions.generate_fits(pic_name, fits_name)
 ST_functions.apply_sext(DIR_sext, DIR_img_fits, fits_name, x_pix, y_pix, cmos2pix)
 
+# 5.- Apply first 'Match' routine.
+if cat_division == 10:
+    ra_dec_list = ST_functions.ra_dec_10()
+else:
+    ra_dec_list = ST_functions.ra_dec_5()
+pool = multiprocessing.Pool(multiprocessing.cpu_count())
+first_match_results = pool.map(ST_functions.call_match, ra_dec_list)
+match1_tabla1 = Table(names=('RA_center', 'DEC_center', 'sig', 'Nr'))
+for i, (status1, resultado1) in enumerate(first_match_results):
+    RA1, DEC1 = ra_dec_list[i]
+    if status1 == 0:
+        match1_aux1 = resultado1.find('sig=')
+        match1_aux2 = resultado1.find('Nr=')
+        match1_auxsig1 = resultado1[match1_aux1+4:match1_aux1+25]
+        match1_auxnr1 = resultado1[match1_aux2+3:match1_aux2+10]
+        match1_sig1 = match1_auxsig1.split(' ', 1)[0]
+        match1_nr1 = match1_auxnr1.split(' ', 1)[0]
+        match1_tabla1.add_row([str(RA1), str(DEC1), match1_sig1, match1_nr1])
 
+if len(match1_tabla1) == 0:
+    print 'There is no match!'
+else:
+    # Reordena la tabla por menor 'Nr'.
+    match1_tabla1.sort('Nr')
+    match1_tabla1.reverse()
+    print match1_tabla1
 
+print ' --- END --- '
 
 
 ## 6.- Match: First iteration.
@@ -69,11 +96,8 @@ match1_tabla1 = Table(names=('RA_center', 'DEC_center', 'sig', 'Nr'))
 
 # Create the list of parameters.
 ra_dec = [(ra, dec) for ra in range(0, 360, 10) for dec in range(-80, 90, 10)]
-print ' --- RA DEC --- '
-print ra_dec
-print ' --- END --- '
 pool = multiprocessing.Pool(multiprocessing.cpu_count())
-results = pool.map(ST_functions.call_match(ra_dec, DIR_stars, DIR_proj_cat2, param1), ra_dec)
+results = map(ST_functions.call_match, ra_dec, DIR_stars, DIR_proj_cat2, param1)
 
 print ' --- RESULTS --- '
 print results
