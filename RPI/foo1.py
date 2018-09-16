@@ -1,3 +1,4 @@
+# Differents kind of test.
 
 def square1(x, str1):
     s = x*x
@@ -24,3 +25,17 @@ print list4
 
 list5 = list4 + [(0, 'b')]
 print list5
+
+import re
+str = 'TRANS: a=2.318231599e-01 b=2.470497627e-01 c=-1.030737615e+00 d=-2.576674781e-01 \
+e=-8.481878904e-01 f=2.395284293e-01 sig=1.7915e-02 Nr=12 Nm=13 sx=1.1163e-01 sy=1.8764e-01'
+match_reg = re.compile(r"sig=(-*\d\.\d+e...) Nr=(-*\d+)")
+print match_reg
+result = match_reg.findall(str)[0] + 1
+print result
+str = 'spam-egg'
+exp = re.compile(r'(?<=-)\w+')
+result = exp.findall(str)
+print result
+
+

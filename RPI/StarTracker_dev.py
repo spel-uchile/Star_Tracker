@@ -42,32 +42,10 @@ ST_functions.generate_fits(pic_name, fits_name)
 ST_functions.apply_sext(DIR_sext, DIR_img_fits, fits_name, x_pix, y_pix, cmos2pix)
 
 # 5.- Apply first 'Match' routine.
-if cat_division == 10:
-    ra_dec_list = ST_functions.ra_dec_10()
-else:
-    ra_dec_list = ST_functions.ra_dec_5()
-pool = multiprocessing.Pool(multiprocessing.cpu_count())
-first_match_results = pool.map(ST_functions.call_match, ra_dec_list)
-match1_tabla1 = Table(names=('RA_center', 'DEC_center', 'sig', 'Nr'))
-for i, (status1, resultado1) in enumerate(first_match_results):
-    RA1, DEC1 = ra_dec_list[i]
-    if status1 == 0:
-        match1_aux1 = resultado1.find('sig=')
-        match1_aux2 = resultado1.find('Nr=')
-        match1_auxsig1 = resultado1[match1_aux1+4:match1_aux1+25]
-        match1_auxnr1 = resultado1[match1_aux2+3:match1_aux2+10]
-        match1_sig1 = match1_auxsig1.split(' ', 1)[0]
-        match1_nr1 = match1_auxnr1.split(' ', 1)[0]
-        match1_tabla1.add_row([str(RA1), str(DEC1), match1_sig1, match1_nr1])
-
-if len(match1_tabla1) == 0:
-    print 'There is no match!'
-else:
-    # Reordena la tabla por menor 'Nr'.
-    match1_tabla1.sort('Nr')
-    match1_tabla1.reverse()
-    print match1_tabla1
-
+ra_dec_list = ST_functions.generate_ra_dec_list(cat_division)
+first_match_results = ST_functions.apply_map_multiprocess(ra_dec_list)
+first_match_table = ST_functions.generate_matchs_table(ra_dec_list, first_match_results)
+print first_match_table
 print ' --- END --- '
 
 

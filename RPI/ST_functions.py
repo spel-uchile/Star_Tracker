@@ -5,6 +5,7 @@ import re
 import subprocess
 import commands
 import numpy as np
+import multiprocessing
 from PIL import Image
 from astropy.io import fits, ascii
 from astropy.table import Table
@@ -101,15 +102,12 @@ def apply_sext(dir_sext, dir_img_fits, fits_name, x_pix, y_pix, cmos2pix):
     return 0
 
 
-# Define RA/DEC list for 10 degrees separation.
-def ra_dec_10():
-    ra_dec_list = [(ra, dec) for ra in range(0, 360, 10) for dec in range(-80, 90, 10)] + [(0, 90), (0, -90)]
-    return ra_dec_list
-
-
-# Define RA/DEC list for 5 degrees separation.
-def ra_dec_5():
-    ra_dec_list = [(ra, dec) for ra in range(0, 360, 5) for dec in range(-85, 90, 5)] + [(0, 90), (0, -90)]
+# Define RA/DEC list depending on catalog division.
+def generate_ra_dec_list(cat_div):
+    if cat_div == 10:
+        ra_dec_list = [(ra, dec) for ra in range(0, 360, 10) for dec in range(-80, 90, 10)] + [(0, 90), (0, -90)]
+    else:
+        ra_dec_list = [(ra, dec) for ra in range(0, 360, 5) for dec in range(-85, 90, 5)] + [(0, 90), (0, -90)]
     return ra_dec_list
 
 
@@ -132,3 +130,34 @@ def call_match(ra_dec_list):
     match = set_match(ra_dec_str, DIR_stars, DIR_proj_cat2, param1)
     status, result = commands.getstatusoutput(match)
     return status, result
+
+
+# Apply multiprocessing depending on numbers of cores. Then, apply 'call_match'.
+def apply_map_multiprocess(ra_dec_list):
+    n_cores = multiprocessing.cpu_count()
+    if n_cores == 1:
+        first_match_results = map(call_match, ra_dec_list)
+    else:
+        pool = multiprocessing.Pool(n_cores)
+        first_match_results = pool.map(call_match, ra_dec_list)
+    return first_match_results
+
+
+# Select RA/DEC values in which a correct match was obtained, and generate a 'match' table.
+def generate_matchs_table(ra_dec_list, first_match_results):
+    match_table = Table(names=('RA_center', 'DEC_center', 'sig', 'Nr'))
+    match_search = re.compile(r"sig=(-*\d\.\d+e...) Nr=(-*\d+)")
+    for i, (status, result) in enumerate(first_match_results):
+        if status == 0:
+            ra, dec = ra_dec_list[i]
+            reg_result = match_search.findall(result)
+            sig = float(reg_result[0][0])
+            nr = int(reg_result[0][1])
+            match_table.add_row([str(ra), str(dec), sig, nr])
+    if len(match_table) == 0:
+        print 'Can not find any match between picture and catalog!'
+        raise ValueError('There is NO match...')
+    else:
+        match_table.sort('Nr')
+        match_table.reverse()
+    return match_table
