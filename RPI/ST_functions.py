@@ -22,13 +22,13 @@ def names_and_dir():
     dir_this = os.path.dirname(os.path.abspath(__file__)) + '/'
     dir_img_fits = dir_this
     dir_stars = dir_img_fits + 'sext'
-    dir_first_match = dir_img_fits + 'new_cat'
+    dir_first_match_output = dir_img_fits + 'new_cat'
     dir_sext = './sextractor'
     dir_proj_cat1 = './Catalog/Projected/'
     dir_proj_cat2 = dir_proj_cat1 + 'cat_RA_'
     dir_normal_cat = './Catalog/Normal/'
     fits_name = 'img_fits.fits'
-    return dir_this, dir_img_fits, dir_stars, dir_first_match, dir_sext, dir_proj_cat1, \
+    return dir_this, dir_img_fits, dir_stars, dir_first_match_output, dir_sext, dir_proj_cat1, \
         dir_proj_cat2, dir_normal_cat, fits_name
 
 
@@ -95,7 +95,8 @@ def apply_sextractor(dir_sext, dir_img_fits, fits_name, x_pix, y_pix, cmos2pix):
     subprocess.check_output(sext_task, shell=True)
     sext1 = ascii.read('./test.cat', format='sextractor')
     sext1.sort(['MAG_ISO'])
-    sext2 = sext1[0:40]
+    sextractor_stars = 40
+    sext2 = sext1[0:sextractor_stars]
     os.chdir(dir_img_fits)
     sext_x = sext2['X_IMAGE']
     sext_y = sext2['Y_IMAGE']
@@ -128,24 +129,34 @@ def set_match_str(ra, dec, dir_stars, dir_proj_cat2, param):
 DIR_stars = names_and_dir()[2]
 DIR_proj_cat2 = names_and_dir()[6]
 param1 = 'trirad=0.002 nobj=15 max_iter=1 matchrad=1 scale=1'
+param2 = 'trirad=0.002 nobj=20 max_iter=3 matchrad=1 scale=1'
 
 
 # Call 'Match' with RA/DEC list in the shell.
-def call_match(ra_dec_list):
+def call_match_list(ra_dec_list):
     ra, dec = ra_dec_list
     match = set_match_str(ra, dec, DIR_stars, DIR_proj_cat2, param1)
     status, result = commands.getstatusoutput(match)
     return status, result
 
 
+# Call 'Match' one time, in further 'match' iterations.
+def call_match_once(dir_stars, new_proj_cat):
+    match_str = 'match ' + dir_stars + ' 0 1 2 ' + new_proj_cat + ' 0 1 2 ' + param2
+    status, result = commands.getstatusoutput(match_str)
+    regexp_result_numbers = match_numbers_search.findall(result)[0]
+    regexp_result_std = match_std_search.findall(result)[0]
+    return regexp_result_numbers, regexp_result_std
+
+
 # Apply 'call_match' multiprocessing depending on numbers of cores.
 def map_match_and_radec_list_multiprocess(ra_dec_list):
     n_cores = multiprocessing.cpu_count()
     if n_cores == 1:
-        first_match_results = map(call_match, ra_dec_list)
+        first_match_results = map(call_match_list, ra_dec_list)
     else:
         pool = multiprocessing.Pool(n_cores)
-        first_match_results = pool.map(call_match, ra_dec_list)
+        first_match_results = pool.map(call_match_list, ra_dec_list)
     return first_match_results
 
 
@@ -161,7 +172,7 @@ def get_table_with_matchs(ra_dec_list, first_match_results):
             match_table.add_row([str(ra), str(dec), sig, nr])
     if len(match_table) == 0:
         print '- Can not find any match between picture and catalog!'
-        raise ValueError('There is NO match ...')
+        raise ValueError('There is no match ...')
     else:
         match_table.sort('Nr')
         match_table.reverse()
@@ -186,31 +197,14 @@ def get_match_candidates(match_table):
 # With a list of 'match candidates', recall match to obtain the transformation data.
 def get_first_match_data(candidates, try_n):
     cand = candidates[try_n]
-    result = call_match([int(cand[0]), int(cand[1])])[1]
-    regexp_result = match_numbers_search.findall(result)[0]
-    return regexp_result
+    result = call_match_list([int(cand[0]), int(cand[1])])[1]
+    regexp_result_numbers = match_numbers_search.findall(result)[0]
+    regexp_result_std = match_std_search.findall(result)[0]
+    return regexp_result_numbers, regexp_result_std
 
 
 # Apply the 'match' transformation between picture and projected catalog.
 # This is: center of picture (pix) ==> point in the projected catalog (pix).
-# This function CAN BE USEFUL!
-# def apply_match_trans(data):
-#     match_a = float(data[0])
-#     match_b = float(data[1])
-#     match_c = float(data[2])
-#     match_d = float(data[3])
-#     match_e = float(data[4])
-#     match_f = float(data[5])
-#     match_translation = np.array([match_a, match_d])
-#     match_rotation = np.array([(match_b, match_c), (match_e, match_f)])
-#     match_x_pix = np.array([0, 0])
-#     match_x_sky = match_translation + np.dot(match_rotation, match_x_pix)
-#     print ' --- match sky --- '
-#     print match_x_sky
-#     match_ra_pix, match_dec_pix = match_x_sky[0], match_x_sky[1]
-#     match_roll_rad = np.arctan2(match_c, match_b)
-#     match_roll_deg = np.rad2deg(match_roll_rad)
-#     return match_ra_pix, match_dec_pix, match_roll_deg
 def apply_match_trans(data):
     match_a = float(data[0])
     match_b = float(data[1])
@@ -248,3 +242,45 @@ def search_catalog_objects(dir_normal_cat, ra_catalog, dec_catalog):
         noproj_counter2 = noproj_matched_b1[i][0] - noproj_counter
         noproj_table.add_row([new_cat[noproj_counter2][0], new_cat[noproj_counter2][1], new_cat[noproj_counter2][2]])
     return noproj_table
+
+
+# With a list of 'matched' stars, project all in a tangent plane.
+def sky2plane(star_list, ra_project_point, dec_project_point, focal_len):
+    cat_proj = Table([[], [], []])
+    stars_len = len(star_list)
+    for index in range(stars_len):
+        alpha_deg = star_list[index][0]
+        delta_deg = star_list[index][1]
+        mag = star_list[index][2]
+        alpha_rad = np.deg2rad(alpha_deg)
+        delta_rad = np.deg2rad(delta_deg)
+        alpha_0_rad = np.deg2rad(ra_project_point)
+        delta_0_rad = np.deg2rad(dec_project_point)
+        xi_up = np.cos(delta_rad)*np.sin(alpha_rad - alpha_0_rad)
+        xi_down = np.sin(delta_0_rad)*np.sin(delta_rad) \
+            + np.cos(delta_0_rad)*np.cos(delta_rad)*np.cos(alpha_rad - alpha_0_rad)
+        xi = xi_up/xi_down
+        eta_up = np.cos(delta_0_rad)*np.sin(delta_rad) \
+            - np.sin(delta_0_rad)*np.cos(delta_rad)*np.cos(alpha_rad - alpha_0_rad)
+        eta_down = xi_down
+        eta = eta_up/eta_down
+        xi_mm = xi*focal_len
+        eta_mm = eta*focal_len
+        cat_proj.add_row([xi_mm, eta_mm, mag])
+    cat_name = 'new_cat'
+    ascii.write(cat_proj, cat_name, delimiter=' ', format='no_header', overwrite=True,
+                formats={'X': '% 15.5f', 'Y': '% 15.5f', 'Z': '% 15.2f'}, names=['X', 'Y', 'Z'])
+    return 0
+
+
+# Set the RA and Roll coordinates in a standard way (like STEREO way!).
+def normalize_coord(ra, roll):
+    if ra > 180.0:
+        ra_out = ra - 360.0
+    else:
+        ra_out = ra
+    if roll < 0.0:
+        roll_out = roll + 180.0
+    else:
+        roll_out = roll - 180.0
+    return ra_out, roll_out
