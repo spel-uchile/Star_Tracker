@@ -3,6 +3,7 @@ import ST_functions
 import sys
 
 review = False  # True
+save_data = True  # False
 
 # 2.- Define directories, names and constants values.
 DIRs = ST_functions.names_and_dir()
@@ -100,6 +101,9 @@ while try_number < len(match_candidates):
         third_alpha, third_delta = ST_functions.deproject(rpi_focal, third_ra_pix, third_dec_pix,
                                                           second_alpha, second_delta)
         third_alpha, third_roll_deg = ST_functions.normalize_coord(third_alpha, third_roll_deg)
+        if save_data:
+            ST_functions.save_data(pic_name, third_alpha, third_delta, third_roll_deg)
+            print '-> Attitude data has been saved.'
 
 # 8.- Print final pointing results.
         print '-*' * 50
