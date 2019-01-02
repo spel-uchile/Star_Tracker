@@ -124,5 +124,6 @@ while try_number < len(match_candidates):
         elif try_number == 1:
             print '-> Last attempt with match ...'
         else:
-            raise ValueError('Sorry, the program can not find any match between picture and catalog.')
+            raise ValueError('Sorry, after three match attempts,'
+                             ' the program can not find any match between picture and catalog.')
         try_number += 1

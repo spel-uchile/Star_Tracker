@@ -171,7 +171,7 @@ def get_table_with_matchs(ra_dec_list, first_match_results):
             nr = int(regexp_result[1])
             match_table.add_row([str(ra), str(dec), sig, nr])
     if len(match_table) == 0:
-        print '- Can not find any match between picture and catalog!'
+        print '- After search in the whole catalog, I can not find any match between picture and catalog!'
         raise ValueError('There is no match ...')
     else:
         match_table.sort('Nr')
