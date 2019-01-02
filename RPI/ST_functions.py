@@ -287,8 +287,8 @@ def normalize_coord(ra, roll):
 
 
 # Save attitude solution to a file.
-def save_data(pic_name1, ra, dec, roll):
+def save_data(pic_name1, ra, dec, roll, sig, nr):
     att_file = open('attitude_data.txt', 'a')
     pic_name2 = pic_name1.split('/')[-1]
-    to_write = pic_name2 + ' ' + str(ra) + ' ' + str(dec) + ' ' + str(roll) + '\n'
+    to_write = pic_name2 + ' ' + str(ra) + ' ' + str(dec) + ' ' + str(roll) + ' ' + str(sig) + ' ' + str(nr) + '\n'
     att_file.write(to_write)

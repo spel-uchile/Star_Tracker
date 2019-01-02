@@ -3,7 +3,7 @@ import ST_functions
 import sys
 
 review = False  # True
-save_data = True  # False
+save_data = False  # True
 
 # 2.- Define directories, names and constants values.
 DIRs = ST_functions.names_and_dir()
@@ -102,7 +102,12 @@ while try_number < len(match_candidates):
                                                           second_alpha, second_delta)
         third_alpha, third_roll_deg = ST_functions.normalize_coord(third_alpha, third_roll_deg)
         if save_data:
-            ST_functions.save_data(pic_name, third_alpha, third_delta, third_roll_deg)
+            ra = third_alpha
+            dec = third_delta
+            roll = third_roll_deg
+            sig = third_match_std[0]
+            nr = third_match_std[1]
+            ST_functions.save_data(pic_name, ra, dec, roll, sig, nr)
             print '-> Attitude data has been saved.'
 
 # 8.- Print final pointing results.
