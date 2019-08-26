@@ -50,17 +50,32 @@ def review_init_data(sys_arg, len_arg):
         print '- Add the full directory of the image.'
         raise ValueError('Not enough data...')
     elif len_arg == 2:
-        pic_name = sys_arg[1]
-        catalog_division = 10
-        print '- Using default catalog division (10 degrees).'
-    elif len_arg == 3:
-        pic_name = sys_arg[2]
-        if int(sys_arg[1]) == 5:
-            catalog_division = 5
-            print '- Catalog division: 5 degrees.'
+        if 'pic_dir=' in sys_arg[1]:
+            pic_name = sys_arg[1].split('=')[1]
         else:
-            print '- Unknown catalog division.'
-            raise ValueError('Invalid data...')
+            raise ValueError('--> ERROR: Please set the path to the picture with <<pic_dir=>>')
+        catalog_division = 10
+        print '--> Using default catalog division (10 degrees).'
+    elif len_arg == 3:
+        if 'pic_dir=' in sys_arg[1]:
+            pic_name = sys_arg[1].split('=')[1]
+            catalog_division = sys_arg[2].split('=')[1]
+        elif 'pic_dir=' in sys_arg[2]:
+            pic_name = sys_arg[2].split('=')[1]
+            catalog_division = sys_arg[1].split('=')[1]
+        else:
+            raise ValueError('--> ERROR: Please set <<pic_dir=>> and <<cat_div=>>')
+        if int(catalog_division) == 5:
+            catalog_division = 5
+            print '--> Catalog division: 5 degrees.'
+        elif int(catalog_division) == 10:
+            catalog_division = 10
+            print '--> Catalog division: 10 degrees.'
+        elif int(catalog_division) == 15:
+            catalog_division = 15
+            print '--> Catalog division: 15 degrees.'
+        else:
+            raise ValueError('--> ERROR: I can not handle that catalog division.')
     elif len_arg > 3:
         print '- Too many arguments.'
         raise ValueError('Invalid data...')
@@ -111,10 +126,14 @@ def apply_sextractor(dir_sext, dir_img_fits, fits_name, x_pix, y_pix, cmos2pix):
 
 # Define RA/DEC list depending on the catalog division.
 def generate_radec_list(cat_div):
-    if cat_div == 10:
-        ra_dec_list = [(ra, dec) for ra in range(0, 360, 10) for dec in range(-80, 90, 10)] + [(0, 90), (0, -90)]
-    else:
+    if cat_div == 5:
         ra_dec_list = [(ra, dec) for ra in range(0, 360, 5) for dec in range(-85, 90, 5)] + [(0, 90), (0, -90)]
+    elif cat_div == 10:
+        ra_dec_list = [(ra, dec) for ra in range(0, 360, 10) for dec in range(-80, 90, 10)] + [(0, 90), (0, -90)]
+    elif cat_div == 15:
+        ra_dec_list = [(ra, dec) for ra in range(0, 360, 15) for dec in range(-75, 90, 15)] + [(0, 90), (0, -90)]
+    else:
+        raise ValueError('--> ERROR: Please set a valid catalog division (5, 10 or 15).')
     return ra_dec_list
 
 
