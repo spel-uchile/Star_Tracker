@@ -1,9 +1,13 @@
 # 1.- Imports.
+import time
+tm1 = time.time()
 import ST_functions
 import sys
 
-review = True  # False
+tm2 = time.time()
+review = False  # True
 save_data = False  # True
+measure_time = True  # False
 
 # 2.- Define directories, names and constants values.
 DIRs = ST_functions.names_and_dir()
@@ -28,6 +32,7 @@ if review:
 # 4.- Generate a FITS image and execute Source Extractor over it.
 ST_functions.jpg2fits(pic_name, fits_name)
 ST_functions.apply_sextractor(DIR_sext, DIR_img_fits, fits_name, x_pix, y_pix, cmos2pix)
+tm3 = time.time()
 
 # 5.- Apply first 'Match' routine (search over the entire catalog) and delivers a first pointing result.
 ra_dec_list = ST_functions.generate_radec_list(cat_division)
@@ -109,6 +114,16 @@ while try_number < len(match_candidates):
             nr = third_match_std[1]
             ST_functions.save_data(pic_name, ra, dec, roll, sig, nr)
             print '-> Attitude data has been saved.'
+        if measure_time:
+            tm4 = time.time()
+            print ' --- TIME MEASUREMENTS (seconds) --- '
+            print ''
+            print '- Import libraries: ', round(tm2 - tm1, 3)
+            print '- Source Extractor: ', round(tm3 - tm2, 3)
+            print '- Match routines  : ', round(tm4 - tm3, 3)
+            print '- Total time      : ', round(tm4 - tm1, 3)
+            print ''
+            print ' --- *************************** --- '
 
 # 8.- Print final pointing results.
         print '-*' * 50
