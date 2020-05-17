@@ -90,7 +90,7 @@ xsize, ysize = imagebn.size
 # Toma los datos de cuentas de la imagen (0 - 255).
 fits_aux1 = imagebn.getdata()
 # Guarda esas cuentas en un arreglo.
-fits_aux2 = np.array(fits_aux1)
+fits_aux2 = np.array(fits_aux1, dtype=np.int32)
 # Transforma ese arreglo a las mismas dimensiones de la imagen.
 fits_aux3 = fits_aux2.reshape(ysize, xsize)
 # Invierte el array para quedar en la orientacion adecuada.
