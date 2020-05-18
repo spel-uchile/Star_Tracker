@@ -28,24 +28,32 @@ _~$ pip install astropy_
 
 ## 4.- Instructions for use
 
-This STT software works by comparing the acquired photo with a stellar catalog. The different catalog segments can be separated by 5, 10, or 15 degrees.
+This STT software works by comparing the acquired picture with a stellar catalog. The different catalog segments can be separated by 5, 10, or 15 degrees.
 You can choose it when you run the program. You can test this STT program with RPi pictures or with STEREO HI-1 pictures.
 
 ### 4.1.- To use it with Raspberry Pi pictures
 
+By default, this software will use a picture from __/RPI/Sample_images/__. You can test it with other pictures on the same folder, or use your pictures taken with a Raspberry Pi V2.1 camera. <br />
 1. For a 10 degrees catalog separation, run in the terminal: <br />
 _~$ python StarTracker_10_deg.py_ <br />
-By default, it will use a picture from __/RPI/Sample_images/__. You can test it with other pictures on the same folder, or use your pictures taken with a Raspberry Pi V2.1 camera.
 2. For a 5 degrees catalog separation, run in the terminal: <br />
 _~$ python StarTracker_5_deg.py_
 
 ### 4.2.- To use it with [STEREO](https://stereo.gsfc.nasa.gov/) pictures
 
-This STT software can also be tested with pictures from the [HI-1 detector](http://www.stereo.rl.ac.uk/) from the STEREO mission. You can use pictures from the folder __/RPI/STEREO_pics/__ or download any HI-1A L0 photo from [STEREO SCIENCE CENTER](https://stereo-ssc.nascom.nasa.gov/pub/ins_data/secchi/L0/a/img/hi_1/).<br />
+This STT software can also be tested with pictures from the [HI-1 detector](http://www.stereo.rl.ac.uk/) from the STEREO mission. This procedure proves that different cameras can be used with this algorithm, and it is not attached to particular hardware. <br />
+The STEREO HI-1 pictures can have different processing levels. These levels are well explained in [STEREO HI data processing documentation](https://www.ukssdc.ac.uk/solar/stereo/documentation/HI_processing.html). We use two different image format:
+
+- L0 images, which can be download from [STEREO SCIENCE CENTER - L0](https://stereo-ssc.nascom.nasa.gov/pub/ins_data/secchi/L0/a/img/hi_1/).
+- L2 images, which can be download from [STEREO SCIENCE CENTER - L2](https://stereo-ssc.nascom.nasa.gov/pub/ins_data/secchi_hi/L2/a/img/hi_1/).
+
+There are examples of pictures of both kinds in folder __/RPI/STEREO_pics/__. <br />
 1. For a 10 degrees catalog separation, run in the terminal: <br />
-_~$ python StarTracker_10_deg_FITS.py < full path to HI-1 picture >_ <br />
+_~$ python StarTracker_10_deg_FITS.py_ < full path to HI-1 picture > <br />
 2. For a 5 degrees catalog separation, run in the terminal: <br />
-_~$ python StarTracker_5_deg_FITS.py < full path to HI-1 picture >_
+_~$ python StarTracker_5_deg_FITS.py_ < full path to HI-1 picture >
+
+The attitude information can be read from the STEREO image header, and various software can be used for it, for example, [DS9](https://sites.google.com/cfa.harvard.edu/saoimageds9).
 
 ## 5.- Any questions?
 
@@ -54,4 +62,4 @@ Ph.D. student in Electrical Engineering at the University of Chile, Santiago, Ch
 e-mail: samuel.gutierrez@ug.uchile.cl
 
 <br />
-README updated May 17, 2020, by SGR.
+README updated May 18, 2020, by SGR.
