@@ -61,7 +61,7 @@ print '--- 0 0 ---'
 
 # Img .jpg name.
 #img_jpg_name = 'img.jpg'
-nombre_img_jpg = '26_07_-_21_01_51_image7_800.jpg'
+nombre_img_jpg = '26_07_-_20_52_00_image7_800.jpg'
 # Directorio imagen .jpg.
 dir_img_jpg = './Sample_images/' + nombre_img_jpg
 # Directorio donde se guarda imagen .fits.
