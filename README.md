@@ -10,7 +10,7 @@ These new satellites will have pointing capabilities, with a robust attitude det
 <!---
 ![alt text](https://github.com/spel-uchile/Star_Tracker/blob/master/stt.jpg?raw=true)
 -->
-<img src="https://github.com/spel-uchile/Star_Tracker/blob/master/stt.jpg" width="80"/>
+<img src="https://github.com/spel-uchile/Star_Tracker/blob/master/stt.jpg" width="400"/>
 
 ## 2.- Description
 
