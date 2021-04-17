@@ -7,6 +7,10 @@ This GitHub offers to the CubeSat research community an open-source Star Tracker
 These new satellites will have pointing capabilities, with a robust attitude determination and control system (ADCS). <br/>
 --> More info about the [SUCHAI project](http://spel.ing.uchile.cl) and [PlantSat](https://plantsat.spel.cl/).
 
+
+![alt text](https://github.com/spel-uchile/Star_Tracker/blob/master/stt.jpg?raw=true)
+
+
 ## 2.- Description
 
 - This GitHub contains a fully functional Star Tracker that you can test on a Linux PC. Nevertheless, the main idea is to use it with a Raspberry Pi (RPi) and its camera (V2.1) in an autonomously way.
@@ -62,4 +66,4 @@ Ph.D. student in Electrical Engineering at the University of Chile, Santiago, Ch
 e-mail: samuel.gutierrez@ug.uchile.cl
 
 <br />
-README updated May 18, 2020, by SGR.
+README updated April 17, 2021, by SGR.
