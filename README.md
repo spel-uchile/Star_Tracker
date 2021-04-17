@@ -7,7 +7,7 @@ This GitHub offers to the CubeSat research community an open-source Star Tracker
 These new satellites will have pointing capabilities, with a robust attitude determination and control system (ADCS). <br/>
 --> More info about the [SUCHAI project](http://spel.ing.uchile.cl) and [PlantSat](https://plantsat.spel.cl/).
 
-<p align="center"
+<p align="center">
   <img src="https://github.com/spel-uchile/Star_Tracker/blob/master/stt.jpg" width="460"/>
 </p>
 
