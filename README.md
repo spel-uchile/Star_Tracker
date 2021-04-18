@@ -30,7 +30,7 @@ We use __version 2.19.5__ in our program. <br />
 _~$ pip install astropy_
 3. Finally, clone this repository in any folder on your RPI, for example: __/home/pi/Desktop/Git/ST/__
 
-## 4.- Instructions for use
+## 4.- Use instructions
 
 This STT software works by comparing the acquired picture with a stellar catalog. The different catalog segments can be separated by 5, 10, or 15 degrees.
 You can choose it when you run the program. You can test this STT program with RPi pictures or with STEREO HI-1 pictures.
@@ -59,10 +59,16 @@ _~$ python StarTracker_5_deg_FITS.py_ < full path to HI-1 picture >
 
 The attitude information can be read from the STEREO image header, and various software can be used for it, for example, [DS9](https://sites.google.com/cfa.harvard.edu/saoimageds9).
 
-## 5.- Any questions?
+## 5.- Research
+
+This STT is deeply tested with theoretical analysis and ground-based night-sky pictures. The tools, algorithms, methods, and results are fully described in [my paper in IEEE ACCESS](https://ieeexplore.ieee.org/document/9179736).
+
+If you use this open project in your research or development, please cite it.
+
+## 6.- Any questions?
 
 Contact: Samuel T. Gutiérrez. <br />
-Ph.D. student in Electrical Engineering at the University of Chile, Santiago, Chile. <br />
+Ph.D.(c) in Electrical Engineering at the University of Chile, Santiago, Chile. <br />
 e-mail: samuel.gutierrez@ug.uchile.cl
 
 <br />
