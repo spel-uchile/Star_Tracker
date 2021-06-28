@@ -28,19 +28,29 @@ researchers to aid in growing up this project!
 
 ## 3.- Installation instructions
 
-1. Two open software commonly used in the astronomy field: __Source Extractor__ and __Match__, are the base of this STT code. To use this STT, you need to install first these two software.<br />
-    1.1.- Get and install [Source Extractor.](https://www.astromatic.net/software/sextractor)
+1. Two open software commonly used in the astronomy field: __Source Extractor__ and __Match__, are the base of this STT code. To use this STT, you need to install first these two software. You can do it manually in the following way: <br />
+    A.1.- Get and install [Source Extractor.](https://www.astromatic.net/software/sextractor)
 You can find this program in the Linux (RPI) repository, and install it by typing in the terminal:
 ```bash
-~$ sudo apt install sextractor
+sudo apt install sextractor
 ```
-We use __version 2.19.5__ in our program. <br />
-    1.2.- Get and install [Match](http://spiff.rit.edu/match/). We use __version 0.14__ in our program.
+    We use __version 2.19.5__ in our implementation. <br />
+    A.2.- Get and install [Match](http://spiff.rit.edu/match/). We use __version 0.14__ in our program.<br />
+As an alternative to his installation, you also can install these software using the script called _stt_installer.sh_, which is in the __RPI__ folder. Type the following in the terminal:
+```bash
+cd RPI
+./stt_installer.sh
+```
 2. This STT software uses the [Python-Astropy](http://www.astropy.org) package. You can install it by typing in the terminal:
 ```bash
-~$ pip install astropy
+pip install astropy
 ```
-3. Finally, clone this repository in any folder on your RPI, for example: __/home/pi/Git/STT/__
+3. Finally, clone this repository in any folder on your RPI. For example, you can type the following in the terminal:
+```bash
+mkdir Git
+cd Git
+git clone https://github.com/spel-uchile/Star_Tracker.git
+```
 
 ## 4.- Use instructions
 
@@ -52,11 +62,11 @@ You can choose it when you run the program. You can test this STT program with R
 By default, this software will use a picture from __/RPI/Sample_images/__. You can test it with other pictures on the same folder, or use your pictures taken with a Raspberry Pi V2.1 camera. <br />
 1. For a 10 degrees catalog separation, run in the terminal: <br />
 ```bash
-~$ python StarTracker_10_deg.py
+python StarTracker_10_deg.py
 ```
 2. For a 5 degrees catalog separation, run in the terminal: <br />
 ```bash
-~$ python StarTracker_5_deg.py
+python StarTracker_5_deg.py
 ```
 
 ### 4.2.- To use it with [STEREO](https://stereo.gsfc.nasa.gov/) pictures
@@ -70,14 +80,14 @@ The STEREO HI-1 pictures can have different processing levels. These levels are 
 There are examples of pictures of both kinds in folder __/RPI/STEREO_pics/__. <br />
 1. For a 10 degrees catalog separation, run in the terminal:
 ```bash
-~$ python StarTracker_10_deg_FITS.py <full_path_to_HI-1_picture>
+python StarTracker_10_deg_FITS.py <full_path_to_HI-1_picture>
 ```
 2. For a 5 degrees catalog separation, run in the terminal:
 ```bash
-~$ python StarTracker_5_deg_FITS.py <full_path_to_HI-1_picture>
+python StarTracker_5_deg_FITS.py <full_path_to_HI-1_picture>
 ```
 
-The attitude information can be read from the STEREO image header, and various software can be used for it, for example, [DS9](https://sites.google.com/cfa.harvard.edu/saoimageds9).
+The attitude information can be read from the STEREO image header. Various software can be used for it, for example, [DS9](https://sites.google.com/cfa.harvard.edu/saoimageds9).
 
 ## 5.- Research
 
