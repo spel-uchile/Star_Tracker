@@ -2,11 +2,9 @@
 printf " -----***** INSTALLING SOURCE EXTRACTOR *****----- \n"
 sudo apt install sextractor
 
-# Download Match (V0.14)
-printf "\n -----***** DOWNLOADING MATCH V0.14 *****----- \n"
-wget spiff.rit.edu/match/match-0.14.tar.gz
-# Extract and install Match
+# Extract and install Match V0.14
 printf "\n -----***** INSTALLING MATCH V0.14 *****----- \n"
+cd ..
 tar -xf match-0.14.tar.gz -C .
 cd match-0.14
 ./configure
@@ -14,11 +12,10 @@ make
 make check
 sudo make install
 make clean
-cd ..
-rm -rf match-0.14.tar.gz
+cd ../RPI
 
 # Testing Source Extractor and Match
 printf "\n -----***** TESTING SOURCE EXTRACTOR *****----- \n"
-sextractor
+source-extractor
 printf "\n -----***** TESTING MATCH *****----- \n"
 match
