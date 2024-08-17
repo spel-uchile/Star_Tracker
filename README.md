@@ -25,35 +25,25 @@ determination and control system (ADCS) through in-house sensors and algorithms 
 
 - This GitHub contains a fully functional Star Tracker that you can test on a Linux PC. 
 Nevertheless, the main idea is to use it with a Raspberry Pi (RPi) and its camera (V2.1) in an autonomous way.
-- This code is written in _Python 2.7_. All the code and the necessary files are in the __RPI__ folder.
+- This code is written in _Python 2.7_. All the code and the necessary files are in the __RPi__ folder.
 - This GitHub is __free__ and __open__ to everyone interested in using it, __especially researchers working on CubeSats.__ 
 We encourage interested researchers to aid in growing up this project!
 
 ## 3.- Installation instructions
 
-1. Two open software commonly used in the astronomy field: __Source Extractor__ and __Match__, are the base of this STT code. To use this STT, you need to install first these two software. You can do it manually in the following way: <br />
-    1.1.- Get and install [Source Extractor.](https://www.astromatic.net/software/sextractor)
-You can find this program in the Linux (RPI) repository, and install it by typing in the terminal:
-    ```bash
-    sudo apt install sextractor
-    ```
-    We use __version 2.19.5__ in our implementation. <br />
-    1.2.- Get and install [Match](http://spiff.rit.edu/match/). We use __version 0.14__ in our program.<br />
-As an alternative to this installation, you also can install these software using the script called _stt_installer.sh_, 
-which is in the __RPI__ folder. Type the following in the terminal:
+1. Two open software commonly used in the astronomy field are the base of this STT code: [Source Extractor](https://www.astromatic.net/software/sextractor)
+and [Match](http://spiff.rit.edu/match/). To properly use this STT, you first need to install these two software. You can do it using the
+bash script provided in *RPi/stt_installer.sh*: <br />
 ```bash
-cd RPI
-./stt_installer.sh
+cd RPi
+sh stt_installer.sh
 ```
+In our implementation, we use version **2.19.5** of Source Extractor and version **0.14** of Match. However, using
+newer version of Source Extractor should not be a problem for the algorithm. <br />
+
 2. This STT software uses the [Python-Astropy](http://www.astropy.org) package. You can install it by typing in the terminal:
 ```bash
-pip install astropy
-```
-3. Finally, clone this repository in any folder on your RPI. For example, you can type the following in the terminal:
-```bash
-mkdir Git
-cd Git
-git clone https://github.com/spel-uchile/Star_Tracker.git
+python3 -m pip install astropy
 ```
 
 ## 4.- Use instructions
