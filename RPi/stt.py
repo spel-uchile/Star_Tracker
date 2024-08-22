@@ -16,10 +16,10 @@ if cat_division not in (5, 10, 15):
     parser.error("Please introduce a valid catalog division: 5/10/15")
 
 if stt_type == "direct_rpi":
-    stt.fn_a("direct_rpi", cat_division, exp_time)
+    stt.solve_lis_grab_img(cat_division, exp_time)
 elif stt_type == "sample_rpi":
-    stt.fn_b("sample_rpi", cat_division, n_pic)
+    stt.solve_lis_sample_rpi(cat_division, n_pic)
 elif stt_type == "sample_stereo":
-    stt.fn_c("sample_stereo", cat_division, n_pic)
+    stt.solve_lis_sample_stereo(cat_division, n_pic)
 else:
-    raise NameError("---> ERROR: Please introduce a valid option to use this STT software (see Documentation)!")
+    raise NameError("---> ERROR: Please introduce a valid option to use this STT software (see the Documentation)!")
