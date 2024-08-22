@@ -16,10 +16,12 @@ determination and control system (ADCS) through in-house sensors and algorithms 
 - [SPEL](https://spel.cl/) <br/>
 - [The first chilean satellite swarm in the SmallSat Conference (2023)](https://digitalcommons.usu.edu/smallsat/2023/all2023/56/) <br/>
 - [SOST paper in IEEE ACCESS (2020)](https://ieeexplore.ieee.org/document/9179736) <br/>
-
+ 
 <p align="center">
-  <img src="https://github.com/spel-uchile/Star_Tracker/blob/master/stt.jpg" width="460"/>
+  <img src="https://github.com/spel-uchile/Star_Tracker/blob/master/STT_SUCHAI2.jpg" width="460"/>
 </p>
+The image shows the STT payload being integrated into the SUCHAI-2 nanosatellite. The RPi Zero W is attached following 
+the PC-104 standard, with the RPi V2.1 camera and the associated electronics to make it work properly.
 
 ## 2.- Description
 
