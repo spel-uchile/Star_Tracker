@@ -2,3 +2,5 @@
 *.idea
 # Match folder
 /match-0.14
+# Python folder
+RPi/__pycache__
