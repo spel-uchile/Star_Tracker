@@ -73,7 +73,7 @@ The STEREO HI-1 pictures can have different processing levels. These levels are 
 - L0 images, which can be downloaded from [STEREO SCIENCE CENTER - L0](https://stereo-ssc.nascom.nasa.gov/pub/ins_data/secchi/L0/a/img/hi_1/).
 - L2 images, which can be downloaded from [STEREO SCIENCE CENTER - L2](https://stereo-ssc.nascom.nasa.gov/pub/ins_data/secchi_hi/L2/a/img/hi_1/).
 
-There are examples of pictures of both kinds in folder __/RPI/STEREO_pics/__. <br />
+There are examples of pictures of both kinds in folder __/RPi/Sample_images/STEREO/__ <br />
 1. For a 10 degrees catalog separation, run in the terminal:
 ```bash
 python StarTracker_10_deg_FITS.py <full_path_to_HI-1_picture>
@@ -105,8 +105,9 @@ If you are using this open project in your research or development, please cite 
 ## 6.- Any questions?
 
 Contact: Samuel T. Gutiérrez. <br />
+Postdoc at SPEL group. <br />
 PhD in Electrical Engineering at the University of Chile, Santiago, Chile. <br />
-e-mail: samuel.gutierrez@ug.uchile.cl
+samuel.gutierrez@ug.uchile.cl
 
 <br />
-README updated August 17, 2024, by SGR.
+README updated August 23, 2024, by SGR.
