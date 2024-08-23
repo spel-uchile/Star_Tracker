@@ -34,11 +34,11 @@ We encourage interested researchers to aid in growing up this project!
 ## 3.- Installation instructions
 
 1. Two open software commonly used in the astronomy field are the base of this STT code: [Source Extractor](https://www.astromatic.net/software/sextractor)
-and [Match](http://spiff.rit.edu/match/). To properly use this STT, you first need to install these two software. You can do it using the
-bash script provided in *RPi/stt_installer.sh*: <br />
+and [Match](http://spiff.rit.edu/match/). To properly use this STT, you first need to install these two software. In Linux, you can do it using the
+bash script provided in *RPi/linux_installer.sh*: <br />
 ```bash
 cd RPi
-sh stt_installer.sh
+sh linux_installer.sh
 ```
 In our implementation, we use version **2.19.5** of Source Extractor and version **0.14** of Match. However, using
 newer version of Source Extractor should not be a problem for the algorithm. <br />

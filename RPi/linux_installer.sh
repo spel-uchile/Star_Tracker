@@ -12,10 +12,14 @@ make
 make check
 sudo make install
 make clean
-cd ../RPI
+cd ../RPi
 
 # Testing Source Extractor and Match
 printf "\n -----***** TESTING SOURCE EXTRACTOR *****----- \n"
-source-extractor
+cmd_sex="source-extractor"
+sex_status=$?
+[ $sex_status -eq 0 ] && echo "$cmd_sex was successfully executed!"
 printf "\n -----***** TESTING MATCH *****----- \n"
-match
+cmd_match="match"
+match_status=$?
+[ $match_status -eq 0 ] && echo "$cmd_match was successfully executed!"
