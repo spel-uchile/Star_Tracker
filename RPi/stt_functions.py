@@ -103,7 +103,7 @@ def get_catalog_center_points(x_center, y_center, distance, lis_type="rpi"):
                 catalog_center_list.append([ii2, jj2])
         catalog_center_list = catalog_center_list + [[0, 90], [0, -90]]
     elif lis_type == "stereo":
-        catalog_center_list = [(ra, dec) for ra in range(0, 360, 5) for dec in range(-85, 90, 5)]
+        catalog_center_list = [(ra, dec) for ra in range(0, 360, distance) for dec in range(-85, 90, distance)] + [(0, 90), (0, -90)]
     else:
         return NameError("ERROR: See function get_catalog_center_points")
     return catalog_center_list
