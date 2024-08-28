@@ -6,7 +6,6 @@ import re
 import subprocess as sp
 import time
 from astropy.io import fits, ascii
-from astropy.io.ascii.core import FORMAT_CLASSES
 from astropy.table import Table
 from PIL import Image
 
@@ -328,7 +327,7 @@ def solve_lis(img_full_dir, catalog_division, stt_data_dir):
             attempts += 1
             print('---> ERROR: {}'.format(err))
     if attempts == LIS_MAX_ITER:
-        raise ValueError('--> ERROR: After three attempts to find a match, it can not be done :(')
+        raise ValueError("--> ERROR: After {} attempts to find a match, it can not be done :(".format(LIS_MAX_ITER))
     # Print final results.
     tm2 = time.time()
     exec_time = tm2 - tm1
