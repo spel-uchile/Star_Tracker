@@ -2,10 +2,14 @@ import argparse
 import stt_selector as stt
 
 parser = argparse.ArgumentParser(prog="STT", description="STT main script")
-parser.add_argument("type", type=str, help="The way of running the software.")
-parser.add_argument("catalog", type=int, help="The degree of catalog separation in the algorithm.")
-parser.add_argument("-exp", "--exptime", type=int, help="Exposure time of the grabbed picture (in direct mode).", default=800)
-parser.add_argument("-n", "--npic", type=int, help="The number of the picture to analyze (in sample mode).", default=1)
+parser.add_argument("type", type=str,
+                    help="The way of running the software: direct_rpi, sample_rpi, sample_stereo.")
+parser.add_argument("catalog", type=int,
+                    help="The degree of catalog separation in the algorithm: 5, 10, 15.")
+parser.add_argument("-exp", "--exptime", type=int,
+                    help="Exposure time (in ms) of the grabbed picture (in direct mode).", default=800)
+parser.add_argument("-n", "--npic", type=int,
+                    help="The number of the picture to analyze (in sample mode).", default=1)
 args = parser.parse_args()
 stt_type = args.type
 cat_division = args.catalog
