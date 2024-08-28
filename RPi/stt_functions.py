@@ -305,6 +305,7 @@ def solve_lis(img_full_dir, catalog_division, stt_data_dir):
     print("\n---> Match candidates:")
     print(match_candidates)
     attempts = 0
+    third_alpha, third_delta, third_roll_deg, third_match_std = (0, 0, 0, 0)
     while attempts < LIS_MAX_ITER:
         try:
             first_ra_catalog, first_dec_catalog = match_candidates[attempts][0], match_candidates[attempts][1]
@@ -334,5 +335,4 @@ def solve_lis(img_full_dir, catalog_division, stt_data_dir):
     exec_time = tm2 - tm1
     print("===> SOLUTION:\n RA   = {:.4f}°\n DEC  = {:.4f}°\n Roll = {:.4f}°\n Exec time = {:.4f} s".format(
         third_alpha, third_delta, third_roll_deg, exec_time))
-    lis_dir = "{}/lis_one_image.txt".format(stt_data_dir)
     return third_alpha, third_delta, third_roll_deg, third_match_std[0], third_match_std[1]
