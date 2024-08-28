@@ -29,5 +29,6 @@ def solve_lis_sample_rpi(cat_division, n_pic):
 
 
 def solve_lis_sample_stereo(cat_division, n_pic):
-    print(cat_division, n_pic)
+    image_dir = "{}/Sample_images/STEREO/20070130_080100_2bh1A_br01.fts".format(file_dir)
+    stt.solve_lis(image_dir, cat_division, stt_dir, lis_type="stereo")
     return 0
