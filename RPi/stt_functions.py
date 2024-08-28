@@ -128,7 +128,7 @@ def set_match_str(ra, dec, dir_stars, dir_proj_cat, param, base='catalog'):
     ra_dec_str = "{}_DEC_{}".format(ra, dec)
     if base == 'catalog':
         match_str = "match {} 0 1 2 {}{} 0 1 2 {}".format(dir_stars, dir_proj_cat, ra_dec_str, param)
-        print(match_str)
+        # print(match_str)
     elif base == 'picture':
         match_str = "match {}{} 0 1 2 {} 0 1 2 {}".format(dir_proj_cat, ra_dec_str, dir_stars, param)
     else:
@@ -302,6 +302,7 @@ def solve_lis(img_full_dir, catalog_division, stt_data_dir):
     first_match_table = get_table_with_matchs(ra_dec_list, first_match_map_results)
     # print(first_match_table)
     match_candidates = get_match_candidates(first_match_table)
+    print("\n---> Match candidates:")
     print(match_candidates)
     attempts = 0
     while attempts < LIS_MAX_ITER:
@@ -331,7 +332,7 @@ def solve_lis(img_full_dir, catalog_division, stt_data_dir):
     # Print final results.
     tm2 = time.time()
     exec_time = tm2 - tm1
-    print("===> SOLUTION: RA = {:.4f} / DEC = {:.4f} / Roll = {:.4f} / Execution time = {:.4f}".format(
+    print("===> SOLUTION:\n RA   = {:.4f}°\n DEC  = {:.4f}°\n Roll = {:.4f}°\n Exec time = {:.4f} s".format(
         third_alpha, third_delta, third_roll_deg, exec_time))
     lis_dir = "{}/lis_one_image.txt".format(stt_data_dir)
     return third_alpha, third_delta, third_roll_deg, third_match_std[0], third_match_std[1]
