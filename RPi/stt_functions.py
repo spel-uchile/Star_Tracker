@@ -14,7 +14,7 @@ SEXTRACTOR_STR = "source-extractor"
 # DIRECTORIES
 DIR_STARS = "sext"
 DIR_PROJ_CAT = "/home/samuel/github/Star_Tracker/RPi/Catalog/RPi/Projected/cat_RA_"
-DIR_NORMAL_CAT = "/home/samuel/github/Star_Tracker/Catalog/RPi/Normal/"
+DIR_NORMAL_CAT = "/home/samuel/github/Star_Tracker/RPi/Catalog/RPi/Normal/"
 NEW_PROJ_CAT = 'new_cat'
 # ALGORITHM PARAMETERS
 SEXTRACTOR_MAX_STARS = 40
