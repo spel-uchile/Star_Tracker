@@ -25,17 +25,17 @@ the PC-104 standard, with the RPi V2.1 camera and the associated electronics to 
 
 ## 2.- Description
 
-- This GitHub contains a fully functional Star Tracker that you can test on a Linux PC. 
-Nevertheless, the main idea is to use it with a Raspberry Pi (RPi) and its camera (V2.1) in an autonomous way.
-- This code is written in _Python 2.7_. All the code and the necessary files are in the __RPi__ folder.
-- This GitHub is __free__ and __open__ to everyone interested in using it, __especially researchers working on CubeSats.__ 
-We encourage interested researchers to aid in growing up this project!
+- This GitHub contains a fully functional STT you can test on a Linux PC. Nevertheless, the main idea 
+is to use it with a Raspberry Pi (RPi) and its camera (V2.1) in an autonomous way.
+- This code is currently working on *Python 3.10*. All the code and the necessary files are in the **RPi** folder.
+- This GitHub is **free** and **open** to everyone interested in using it, **especially researchers working on CubeSats.** 
+We encourage interested researchers to help this project grow!
 
 ## 3.- Installation instructions
 
 1. Two open software commonly used in the astronomy field are the base of this STT code: [Source Extractor](https://www.astromatic.net/software/sextractor)
-and [Match](http://spiff.rit.edu/match/). To properly use this STT, you first need to install these two software. In Linux, you can do it using the
-bash script provided in *RPi/linux_installer.sh*: <br />
+and [Match](http://spiff.rit.edu/match/). To properly use this STT, you first need to install these two software. In a Linux computer, you 
+can do it using the bash script provided in *RPi/linux_installer.sh*: <br />
 ```bash
 cd RPi
 sh linux_installer.sh
@@ -43,47 +43,82 @@ sh linux_installer.sh
 In our implementation, we use version **2.19.5** of Source Extractor and version **0.14** of Match. However, using
 newer version of Source Extractor should not be a problem for the algorithm. <br />
 
-2. This STT software uses the [Python-Astropy](http://www.astropy.org) package. You can install it by typing in the terminal:
+2. For memory reasons, star catalogs are compressed (tar.gz). You can decompress it using the batch script
+in *RPi/extract_cat.sh*: <br />
 ```bash
-python3 -m pip install astropy
+cd RPi
+sh extract_cat.sh
+```
+
+3. This STT software uses the following *Python* libraries:
+- argparse
+- [astropy](http://www.astropy.org)
+- itertools
+- multiprocessing
+- numpy
+- os
+- pillow
+- platform
+- re
+- subprocess
+- time
+
+Most of them come by default in *Python*, and the remaining can be installed by typing in the terminal:
+```bash
+python3 -m pip install astropy pillow
 ```
 
 ## 4.- Use instructions
 
-This STT software works by comparing the acquired picture with a stellar catalog. The different catalog segments can be separated by 5, 10, or 15 degrees.
-You can choose it when you run the program. You can test this STT program with RPi pictures or with STEREO HI-1 pictures.
+This STT software works by comparing the grabbed picture with a stellar catalog. The different catalog segments can 
+be separated by 5, 10, or 15 degrees. The larger the catalog separation, the faster the algorithm works, but the 
+less accurate the solution. You can choose the catalog separation when you run the code. <br />
+You can test this STT software in three different ways:
+- Directly grabbing pictures with the RPi and the V2.1 camera.
+- Using the sample images previously grabbed with the RPi V2.1 camera.
+- Using the sample images from the satellite STEREO HI-1.
 
-### 4.1.- To use it with Raspberry Pi pictures
-
-By default, this software will use a picture from __/RPI/Sample_images/__. You can test it with other pictures on the same folder, or use your pictures taken with a Raspberry Pi V2.1 camera. <br />
-1. For a 10 degrees catalog separation, run in the terminal: <br />
+### 4.1.- Taking pictures with the RPi and the V2.1 camera
+The syntax is the following:
 ```bash
-python StarTracker_10_deg.py
+python3 stt.py direct_rpi <catalog-division>
 ```
-2. For a 5 degrees catalog separation, run in the terminal: <br />
+Catalog division can be 5, 10 or 15. This will acquire a picture with a predefined exposure time of 800 ms. If you 
+want to set your own exposure time, you can try:
 ```bash
-python StarTracker_5_deg.py
+python3 stt.py direct_rpi <catalog-division> -exp <exposure-time>
 ```
+The exposure time is in **ms**.
 
-### 4.2.- To use it with [STEREO](https://stereo.gsfc.nasa.gov/) pictures
+### 4.2.- Using RPi sample images
+The syntax is the following:
+```bash
+python3 stt.py sample_rpi <catalog-division>
+```
+Catalog division can be 5, 10 or 15. This will apply the algorithm over the first picture in the sample images. If you 
+want to try another picture, you can try:
+```bash
+python3 stt.py sample_rpi <catalog-division> -n <picture-number>
+```
+The argument <picture-number> ranges from 1 to 50.
 
-This STT software can also be tested with pictures from the [HI-1 detector](http://www.stereo.rl.ac.uk/) from the STEREO mission. This procedure proves that different cameras can be used with this algorithm, and it is not attached to particular hardware. <br />
-The STEREO HI-1 pictures can have different processing levels. These levels are well explained in [STEREO HI data processing documentation](https://www.ukssdc.ac.uk/solar/stereo/documentation/HI_processing.html). We use two different image format:
+### 4.3.- Using [STEREO](https://stereo.gsfc.nasa.gov/) sample pictures
+
+This STT software can also be tested with pictures from the [HI-1 detector](http://www.stereo.rl.ac.uk/) from the STEREO mission. This procedure 
+proves that different cameras can be used with this algorithm, and it is not attached to particular hardware. <br />
+The STEREO HI-1 pictures can have different processing levels. These levels are well explained 
+in [STEREO HI data processing documentation](https://www.ukssdc.ac.uk/solar/stereo/documentation/HI_processing.html). We use two different image format:
 
 - L0 images, which can be downloaded from [STEREO SCIENCE CENTER - L0](https://stereo-ssc.nascom.nasa.gov/pub/ins_data/secchi/L0/a/img/hi_1/).
 - L2 images, which can be downloaded from [STEREO SCIENCE CENTER - L2](https://stereo-ssc.nascom.nasa.gov/pub/ins_data/secchi_hi/L2/a/img/hi_1/).
 
-There are examples of pictures of both kinds in folder __/RPi/Sample_images/STEREO/__ <br />
-1. For a 10 degrees catalog separation, run in the terminal:
+There are examples of pictures of both kinds in folder *RPi/Sample_images/STEREO* <br />
+To execute the code, the syntax is the following:
 ```bash
-python StarTracker_10_deg_FITS.py <full_path_to_HI-1_picture>
+python3 stt.py sample_stereo <catalog-division>
 ```
-2. For a 5 degrees catalog separation, run in the terminal:
-```bash
-python StarTracker_5_deg_FITS.py <full_path_to_HI-1_picture>
-```
-
-The attitude information can be read from the STEREO image header. Various software can be used for it, for example, [DS9](https://sites.google.com/cfa.harvard.edu/saoimageds9).
+Like the previous cases, catalog division can be 5, 10 or 15. The attitude information can be read from the STEREO 
+image header. Several programs can be used for it, for example, [DS9](https://sites.google.com/cfa.harvard.edu/saoimageds9).
 
 ## 5.- Research
 
@@ -110,4 +145,4 @@ PhD in Electrical Engineering at the University of Chile, Santiago, Chile. <br /
 samuel.gutierrez@ug.uchile.cl
 
 <br />
-README updated August 23, 2024, by SGR.
+README updated August 29, 2024, by SGR.
