@@ -14,10 +14,11 @@ from PIL import Image
 SEXTRACTOR_STR = "source-extractor"
 # DIRECTORIES
 DIR_STARS = "sext"
-DIR_PROJ_CAT_RPI = "/home/samuel/github/Star_Tracker/RPi/Catalog/RPi/Projected"
-DIR_PROJ_CAT_STEREO = "/home/samuel/github/Star_Tracker/RPi/Catalog/STEREO/Projected"
-DIR_NORMAL_CAT_RPI = "/home/samuel/github/Star_Tracker/RPi/Catalog/RPi/Normal"
-DIR_NORMAL_CAT_STEREO = "/home/samuel/github/Star_Tracker/RPi/Catalog/STEREO/Normal"
+DIR_SCRIPT = os.getcwd()
+DIR_PROJ_CAT_RPI = "{}/Catalog/RPi/Projected".format(DIR_SCRIPT)
+DIR_PROJ_CAT_STEREO = "{}/Catalog/STEREO/Projected".format(DIR_SCRIPT)
+DIR_NORMAL_CAT_RPI = "{}/Catalog/RPi/Normal".format(DIR_SCRIPT)
+DIR_NORMAL_CAT_STEREO = "{}/Catalog/STEREO/Normal".format(DIR_SCRIPT)
 NEW_PROJ_CAT = 'new_cat'
 # ALGORITHM PARAMETERS
 SEXTRACTOR_MAX_STARS = 40
