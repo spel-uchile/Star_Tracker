@@ -14,8 +14,8 @@ from PIL import Image
 SEXTRACTOR_STR = "source-extractor"
 # DIRECTORIES
 DIR_STARS = "sext"
-DIR_PROJ_CAT_RPI = "/home/samuel/github/Star_Tracker/RPi/Catalog/RPi/Projected/cat_RA_"
-DIR_PROJ_CAT_STEREO = "/home/samuel/github/Star_Tracker/RPi/Catalog/STEREO/Projected/cat_RA_"
+DIR_PROJ_CAT_RPI = "/home/samuel/github/Star_Tracker/RPi/Catalog/RPi/Projected"
+DIR_PROJ_CAT_STEREO = "/home/samuel/github/Star_Tracker/RPi/Catalog/STEREO/Projected"
 DIR_NORMAL_CAT_RPI = "/home/samuel/github/Star_Tracker/RPi/Catalog/RPi/Normal"
 DIR_NORMAL_CAT_STEREO = "/home/samuel/github/Star_Tracker/RPi/Catalog/STEREO/Normal"
 NEW_PROJ_CAT = 'new_cat'
@@ -30,8 +30,7 @@ FOCAL_LEN_MM_RPI = 3.04
 FOCAL_LEN_MM_STEREO = 78.46
 # MATCH PARAMETERS
 PARAM1 = "trirad=0.002 nobj=15 max_iter=1 matchrad=0.1 scale=1"
-# PARAM2 = "trirad=0.002 nobj=20 max_iter=5 matchrad=0.01 scale=1"
-PARAM2 = "trirad=0.002 nobj=20 max_iter=5 matchrad=0.01 scale=1" #matchrad=0.05 scale=1"
+PARAM2 = "trirad=0.002 nobj=20 max_iter=5 matchrad=0.01 scale=1"
 # REGULAR EXPRESSIONS
 MATCH_STD = re.compile(r"sig=(-*\d\.\d+e...) Nr=(-*\d+) Nm=(-*\d+) sx=(-*\d\.\d+e...) sy=(-*\d\.\d+e...)")
 MATCH_NUMBERS = re.compile(r"a=(-*\d\.\d+e...) b=(-*\d\.\d+e...) c=(-*\d\.\d+e...) "
@@ -62,9 +61,9 @@ def apply_sextractor(img_fits_name, stt_data_dir, lis_type="rpi"):
     Apply Source Extractor over an image and generates a catalog.
     """
     if lis_type == "rpi":
-        PIX2MM = PIX2MM_RPI
+        pix2mm = PIX2MM_RPI
     elif lis_type == "stereo":
-        PIX2MM = PIX2MM_STEREO
+        pix2mm = PIX2MM_STEREO
     else:
         raise NameError("ERROR: See function apply_sextractor")
     os.chdir(stt_data_dir)
@@ -76,8 +75,8 @@ def apply_sextractor(img_fits_name, stt_data_dir, lis_type="rpi"):
     sext_x_pix = sext2['X_IMAGE']
     sext_y_pix = sext2['Y_IMAGE']
     sext_mag = sext2['MAG_ISO']
-    sext_x_mm = (sext_x_pix - X_PIX) * PIX2MM
-    sext_y_mm = (sext_y_pix - Y_PIX) * PIX2MM
+    sext_x_mm = (sext_x_pix - X_PIX) * pix2mm
+    sext_y_mm = (sext_y_pix - Y_PIX) * pix2mm
     sext_filename = 'sext'
     ascii.write([sext_x_mm, sext_y_mm, sext_mag], sext_filename, delimiter=' ', format='no_header', overwrite=True,
                 formats={'X': '% 15.10f', 'Y': '% 15.10f', 'Z': '% 15.10f'}, names=['X', 'Y', 'Z'])
@@ -149,7 +148,7 @@ def call_match_list(ra_dec_list, lis_type="rpi", base='catalog'):
         else:
             raise NameError("ERROR: See function call_match_list ")
     else:
-        raise NameError('==> ERROR: Select a valid base for Match!')
+        raise NameError("---> ERROR: Select a valid base for Match!")
     status, result = sp.getstatusoutput(match)
     return status, result
 
@@ -158,14 +157,14 @@ def set_match_str(ra, dec, dir_stars, dir_proj_cat, param, base='catalog'):
     """
     Define and set the 'match' string before calling it in the shell.
     """
-    ra_dec_str = "{}_DEC_{}".format(ra, dec)
+    ra_dec_str = "cat_RA_{}_DEC_{}".format(ra, dec)
     if base == 'catalog':
-        match_str = "match {} 0 1 2 {}{} 0 1 2 {}".format(dir_stars, dir_proj_cat, ra_dec_str, param)
+        match_str = "match {} 0 1 2 {}/{} 0 1 2 {}".format(dir_stars, dir_proj_cat, ra_dec_str, param)
         # print(match_str)
     elif base == 'picture':
-        match_str = "match {}{} 0 1 2 {} 0 1 2 {}".format(dir_proj_cat, ra_dec_str, dir_stars, param)
+        match_str = "match {}/{} 0 1 2 {} 0 1 2 {}".format(dir_proj_cat, ra_dec_str, dir_stars, param)
     else:
-        raise NameError('==> ERROR: Select a valid base for Match!')
+        raise NameError("---> ERROR: Select a valid base for Match!")
     return match_str
 
 
@@ -182,7 +181,7 @@ def get_table_with_matchs(ra_dec_list, first_match_results):
             nr = int(regexp_result[1])
             match_table.add_row([str(ra), str(dec), sig, nr])
     if len(match_table) == 0:
-        print('--> After search in the whole catalog, I can not find any match between picture and catalog! :(')
+        print("--> After search in the whole catalog, I can not find any match between picture and catalog! :(")
         raise ValueError("---> ERROR: There is no match ...")
     else:
         match_table.sort('Nr')
@@ -200,8 +199,7 @@ def get_match_candidates(match_table):
     elif len_table == 2:
         match_candidates = match_table
     else:
-        short_match_table = match_table[0:3]
-        match_candidates = short_match_table
+        match_candidates = match_table[0:3]
     return match_candidates
 
 
@@ -216,7 +214,7 @@ def get_first_match_data(candidates, try_n, lis_type="rpi", base="catalog"):
         elif lis_type == "stereo":
             result = call_match_list([int(cand[0]), int(cand[1])], lis_type="stereo")[1]
         else:
-            raise NameError("ERROR")
+            raise NameError("ERROR: See function get_first_match_data")
     elif base == "picture":
         print("Base is picture!")
         if lis_type == "rpi":
@@ -226,7 +224,7 @@ def get_first_match_data(candidates, try_n, lis_type="rpi", base="catalog"):
         else:
             raise NameError("ERROR")
     else:
-        raise ValueError("==> ERROR: Select a valid base for Match!")
+        raise ValueError("---> ERROR: Select a valid base for Match!")
     regexp_result_numbers = MATCH_NUMBERS.findall(result)[0]
     regexp_result_std = MATCH_STD.findall(result)[0]
     return regexp_result_numbers, regexp_result_std
@@ -252,13 +250,13 @@ def plane2sky(ra_match_mm, dec_match_mm, ra_catalog, dec_catalog, lis_type="rpi"
     Deproject any arbitrary point in the camera. This is: mm ==> sky coordinates.
     """
     if lis_type == "rpi":
-        FOCAL_LEN_MM = FOCAL_LEN_MM_RPI
+        focal_len_mm = FOCAL_LEN_MM_RPI
     elif lis_type == "stereo":
-        FOCAL_LEN_MM = FOCAL_LEN_MM_STEREO
+        focal_len_mm = FOCAL_LEN_MM_STEREO
     else:
         raise NameError("ERROR")
-    xi = ra_match_mm / float(FOCAL_LEN_MM)
-    eta = dec_match_mm / float(FOCAL_LEN_MM)
+    xi = ra_match_mm / float(focal_len_mm)
+    eta = dec_match_mm / float(focal_len_mm)
     dec_catalog_rad = np.deg2rad(dec_catalog)
     arg1 = np.cos(dec_catalog_rad) - eta * np.sin(dec_catalog_rad)
     arg2 = np.arctan(xi / arg1)
@@ -297,11 +295,11 @@ def sky2plane(star_list, ra_project_point, dec_project_point, lis_type="rpi"):
     cat_projected = Table([[], [], []])
     stars_len = len(star_list)
     if lis_type == "rpi":
-        FOCAL_LEN_MM = FOCAL_LEN_MM_RPI
+        focal_len_mm = FOCAL_LEN_MM_RPI
     elif lis_type == "stereo":
-        FOCAL_LEN_MM = FOCAL_LEN_MM_STEREO
+        focal_len_mm = FOCAL_LEN_MM_STEREO
     else:
-        raise NameError("ERROR")
+        raise NameError("ERROR: See function sky2plane")
     for index in range(stars_len):
         alpha_deg = star_list[index][0]
         delta_deg = star_list[index][1]
@@ -318,8 +316,8 @@ def sky2plane(star_list, ra_project_point, dec_project_point, lis_type="rpi"):
             - np.sin(delta_0_rad) * np.cos(delta_rad) * np.cos(alpha_rad - alpha_0_rad)
         eta_down = xi_down
         eta = eta_up / eta_down
-        xi_mm = xi * FOCAL_LEN_MM
-        eta_mm = eta * FOCAL_LEN_MM
+        xi_mm = xi * focal_len_mm
+        eta_mm = eta * focal_len_mm
         cat_projected.add_row([xi_mm, eta_mm, mag])
     cat_name = 'new_cat'
     ascii.write(cat_projected, cat_name, delimiter=' ', format='no_header', overwrite=True,
@@ -336,8 +334,8 @@ def call_match_once(base="catalog", outfile=None):
     elif base == "picture":
         match_str = "match {} 0 1 2 {} 0 1 2 {}".format(NEW_PROJ_CAT, DIR_STARS, PARAM2)
     else:
-        raise ValueError("==> ERROR: Select a valid base for Match!")
-    # print(match_str)        'match ' + NEW_PROJ_CAT + ' 0 1 2 ' + DIR_STARS + ' 0 1 2 ' + PARAM2
+        raise ValueError("---> ERROR: Select a valid base for Match!")
+    # print(match_str)
     if outfile is not None:
         match_str = match_str + ' outfile=' + outfile
     status, result = sp.getstatusoutput(match_str)
@@ -361,7 +359,7 @@ def solve_lis(img_full_dir, catalog_division, stt_data_dir, lis_type="rpi"):
     elif lis_type == "stereo":
         str_fits = img_full_dir
     else:
-        raise NameError("ERROR")
+        raise NameError("ERROR: Please introduce a valid lis_type parameter <rpi> or <stereo>")
     apply_sextractor(str_fits, stt_data_dir, lis_type)
     # Apply Match - First iteration.
     ra_dec_list = get_catalog_center_points(0, 0, catalog_division, lis_type)
@@ -396,10 +394,10 @@ def solve_lis(img_full_dir, catalog_division, stt_data_dir, lis_type="rpi"):
             attempts += 1
             print('---> ERROR: {}'.format(err))
     if attempts == LIS_MAX_ITER:
-        raise ValueError("--> ERROR: After {} attempts to find a match, it can not be done :(".format(LIS_MAX_ITER))
+        raise ValueError("---> ERROR: After {} attempts to find a match, it can not be done :(".format(LIS_MAX_ITER))
     # Print final results.
     tm2 = time.time()
     exec_time = tm2 - tm1
-    print("===> ATTITUDE SOLUTION:\n RA   = {:.4f}°\n DEC  = {:.4f}°\n Roll = {:.4f}°\n Exec time = {:.4f} s".format(
+    print("\n---> ATTITUDE SOLUTION:\n RA   = {:.4f}°\n DEC  = {:.4f}°\n Roll = {:.4f}°\n Exec time = {:.4f} s".format(
         third_alpha, third_delta, third_roll_deg, exec_time))
     return third_alpha, third_delta, third_roll_deg, third_match_std[0], third_match_std[1]
