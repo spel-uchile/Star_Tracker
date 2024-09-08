@@ -86,7 +86,7 @@ python3 stt.py direct_rpi <catalog-division>
 Catalog division can be 5, 10 or 15. This will acquire a picture with a predefined exposure time of 800 ms. If you 
 want to set your own exposure time, you can try:
 ```bash
-python3 stt.py direct_rpi <catalog-division> -exp <exposure-time>
+python3 stt.py direct_rpi <catalog-division> --exptime <exposure-time>
 ```
 The exposure time is in **ms**.
 
@@ -98,9 +98,9 @@ python3 stt.py sample_rpi <catalog-division>
 Catalog division can be 5, 10 or 15. This will apply the algorithm over the first picture in the sample images. If you 
 want to try another picture, you can try:
 ```bash
-python3 stt.py sample_rpi <catalog-division> -n <picture-number>
+python3 stt.py sample_rpi <catalog-division> --npic <picture-number>
 ```
-The argument <picture-number> ranges from 1 to 50.
+The argument *picture-number* ranges from 1 to 50.
 
 ### 4.3.- Using [STEREO](https://stereo.gsfc.nasa.gov/) sample pictures
 
@@ -117,8 +117,14 @@ To execute the code, the syntax is the following:
 ```bash
 python3 stt.py sample_stereo <catalog-division>
 ```
-Like the previous cases, catalog division can be 5, 10 or 15. The attitude information can be read from the STEREO 
-image header. Several programs can be used for it, for example, [DS9](https://sites.google.com/cfa.harvard.edu/saoimageds9).
+This will apply the algorithm over the first picture in the sample images. Like the previous cases, catalog division 
+can be 5, 10 or 15. The attitude information can be read from the STEREO image header. 
+Several programs can be used for it, for example, [DS9](https://sites.google.com/cfa.harvard.edu/saoimageds9). <br />
+If you want to test another picture, you can try:
+```bash
+python3 stt.py sample_stereo <catalog-division> --npic <picture-number>
+```
+In this case, the argument *picture-number* ranges from 1 to 10.
 
 ## 5.- Research
 
@@ -137,7 +143,7 @@ If you are using this open project in your research or development, please cite 
 }
 ```
 
-## 6.- Any questions?
+## 6.- Questions or comments?
 
 Contact: Samuel T. Gutiérrez. <br />
 Postdoc at SPEL group. <br />
@@ -145,4 +151,4 @@ PhD in Electrical Engineering at the University of Chile, Santiago, Chile. <br /
 samuel.gutierrez@ug.uchile.cl
 
 <br />
-README updated August 29, 2024, by SGR.
+README updated September 8, 2024, by SGR.
