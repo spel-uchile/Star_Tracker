@@ -15,12 +15,14 @@ def solve_lis_grab_img(cat_division, exposure_time_ms):
     process.wait()
     return_code = process.returncode
     if return_code != 0:
-        raise OSError("The script in the shell was not correctly executed!")
+        raise OSError("---> ERROR: The script in the shell was not correctly executed!")
     stt.solve_lis(image_dir, cat_division, stt_dir)
     return 0
 
 
 def solve_lis_sample_rpi(cat_division, n_pic):
+    if n_pic < 1 or n_pic > 50:
+        raise ValueError("---> ERROR: --npic must be between 1 and 50")
     print("\n---> STT: Analyzing picture from Sample_images/RPi/img_{}.jpg "
           "using a catalog division of {}.\n".format(n_pic, cat_division))
     image_dir = "{}/Sample_images/RPi/img_{}.jpg".format(file_dir, n_pic)
@@ -29,6 +31,26 @@ def solve_lis_sample_rpi(cat_division, n_pic):
 
 
 def solve_lis_sample_stereo(cat_division, n_pic):
-    image_dir = "{}/Sample_images/STEREO/20070130_080100_2bh1A_br01.fts".format(file_dir)
+    if n_pic < 1 or n_pic > 10:
+        raise ValueError("---> ERROR: --npic must be between 1 and 10")
+    image_name = stereo_images(n_pic)
+    print("\n---> STT: Analyzing picture from Sample_images/STEREO/{} "
+          "using a catalog division of {}.\n".format(image_name, cat_division))
+    image_dir = "{}/Sample_images/STEREO/{}".format(file_dir, image_name)
     stt.solve_lis(image_dir, cat_division, stt_dir, lis_type="stereo")
     return 0
+
+
+def stereo_images(selector):
+    stereo_images_list = ["20070130_080100_2bh1A_br01.fts",
+                          "20070130_080100_s4h1A.fts",
+                          "20080304_060901_2bh1A_br01.fts",
+                          "20080304_060901_s4h1A.fts",
+                          "20090417_052901_2bh1A_br01.fts",
+                          "20090417_052901_s4h1A.fts",
+                          "20090820_120901_2bh1A_br01.fts",
+                          "20090820_120901_s4h1A.fts",
+                          "20101220_192901_2bh1A_br01.fts",
+                          "20101220_192901_s4h1A.fts"]
+    image = stereo_images_list[selector - 1]
+    return image
